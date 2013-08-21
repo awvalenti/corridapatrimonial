@@ -90,10 +90,8 @@ public class JogoModel implements InterfaceEntradaJogo, OuvinteVitrine {
 	}
 
 	private void efetivarCompra(Jogador jogador, Oferta oferta) {
-		System.out.println("Vitrine antes: " + vitrine);
 		jogador.comprar(oferta);
 		vitrine.remover(oferta);
-		System.out.println("Vitrine depois: " + vitrine);
 		saidaJogo.aoEfetivarCompra(jogador, oferta);
 		verificarSeJogoAcabou();
 	}
