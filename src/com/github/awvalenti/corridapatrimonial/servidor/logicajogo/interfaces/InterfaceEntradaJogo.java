@@ -1,4 +1,4 @@
-package com.github.awvalenti.corridapatrimonial.interfaces;
+package com.github.awvalenti.corridapatrimonial.servidor.logicajogo.interfaces;
 
 
 public interface InterfaceEntradaJogo {

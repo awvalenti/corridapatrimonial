@@ -1,4 +1,4 @@
-package com.github.awvalenti.corridapatrimonial.estrategias;
+package com.github.awvalenti.corridapatrimonial.servidor.logicajogo.estrategias;
 
 import java.math.BigDecimal;
 

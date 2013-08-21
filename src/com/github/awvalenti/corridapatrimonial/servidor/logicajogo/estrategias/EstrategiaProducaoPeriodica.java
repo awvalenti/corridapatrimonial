@@ -1,11 +1,11 @@
-package com.github.awvalenti.corridapatrimonial.estrategias;
+package com.github.awvalenti.corridapatrimonial.servidor.logicajogo.estrategias;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
-import com.github.awvalenti.corridapatrimonial.interfaces.GestorFabricaVitrines;
-import com.github.awvalenti.corridapatrimonial.interfaces.FabricaVitrines;
-import com.github.awvalenti.corridapatrimonial.interfaces.OuvinteVitrine;
+import com.github.awvalenti.corridapatrimonial.servidor.logicajogo.interfaces.FabricaVitrines;
+import com.github.awvalenti.corridapatrimonial.servidor.logicajogo.interfaces.GestorFabricaVitrines;
+import com.github.awvalenti.corridapatrimonial.servidor.logicajogo.interfaces.OuvinteVitrine;
 
 public class EstrategiaProducaoPeriodica implements GestorFabricaVitrines {
 	private final Timer timer = new Timer();

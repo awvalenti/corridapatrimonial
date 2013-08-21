@@ -1,4 +1,4 @@
-package com.github.awvalenti.corridapatrimonial.modelodedados;
+package com.github.awvalenti.corridapatrimonial.servidor.logicajogo.modelodedados;
 
 import java.util.Collections;
 import java.util.List;

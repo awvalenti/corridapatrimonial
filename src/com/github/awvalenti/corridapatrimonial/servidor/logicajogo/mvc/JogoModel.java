@@ -1,18 +1,18 @@
-package com.github.awvalenti.corridapatrimonial.mvc;
+package com.github.awvalenti.corridapatrimonial.servidor.logicajogo.mvc;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.github.awvalenti.corridapatrimonial.interfaces.GestorFabricaVitrines;
-import com.github.awvalenti.corridapatrimonial.interfaces.FabricaVitrines;
-import com.github.awvalenti.corridapatrimonial.interfaces.InterfaceEntradaJogo;
-import com.github.awvalenti.corridapatrimonial.interfaces.InterfaceSaidaJogo;
-import com.github.awvalenti.corridapatrimonial.interfaces.OuvinteOfertas;
-import com.github.awvalenti.corridapatrimonial.interfaces.OuvinteVitrine;
-import com.github.awvalenti.corridapatrimonial.modelodedados.Jogador;
-import com.github.awvalenti.corridapatrimonial.modelodedados.Oferta;
-import com.github.awvalenti.corridapatrimonial.modelodedados.Vitrine;
+import com.github.awvalenti.corridapatrimonial.servidor.logicajogo.interfaces.FabricaVitrines;
+import com.github.awvalenti.corridapatrimonial.servidor.logicajogo.interfaces.GestorFabricaVitrines;
+import com.github.awvalenti.corridapatrimonial.servidor.logicajogo.interfaces.InterfaceEntradaJogo;
+import com.github.awvalenti.corridapatrimonial.servidor.logicajogo.interfaces.InterfaceSaidaJogo;
+import com.github.awvalenti.corridapatrimonial.servidor.logicajogo.interfaces.OuvinteOfertas;
+import com.github.awvalenti.corridapatrimonial.servidor.logicajogo.interfaces.OuvinteVitrine;
+import com.github.awvalenti.corridapatrimonial.servidor.logicajogo.modelodedados.Jogador;
+import com.github.awvalenti.corridapatrimonial.servidor.logicajogo.modelodedados.Oferta;
+import com.github.awvalenti.corridapatrimonial.servidor.logicajogo.modelodedados.Vitrine;
 
 public class JogoModel implements InterfaceEntradaJogo, OuvinteVitrine {
 
@@ -50,6 +50,7 @@ public class JogoModel implements InterfaceEntradaJogo, OuvinteVitrine {
 	}
 
 	@Override
+	@SuppressWarnings("hiding")
 	public synchronized void aoAbrirVitrine(Vitrine vitrine) {
 		this.vitrine = vitrine;
 		saidaJogo.aoAbrirVitrine(vitrine);

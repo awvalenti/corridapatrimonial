@@ -1,13 +1,13 @@
-package com.github.awvalenti.corridapatrimonial.estrategias;
+package com.github.awvalenti.corridapatrimonial.servidor.logicajogo.estrategias;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Random;
 
-import com.github.awvalenti.corridapatrimonial.interfaces.FabricaVitrines;
-import com.github.awvalenti.corridapatrimonial.modelodedados.Oferta;
-import com.github.awvalenti.corridapatrimonial.modelodedados.Produto;
-import com.github.awvalenti.corridapatrimonial.modelodedados.Vitrine;
+import com.github.awvalenti.corridapatrimonial.servidor.logicajogo.interfaces.FabricaVitrines;
+import com.github.awvalenti.corridapatrimonial.servidor.logicajogo.modelodedados.Oferta;
+import com.github.awvalenti.corridapatrimonial.servidor.logicajogo.modelodedados.Produto;
+import com.github.awvalenti.corridapatrimonial.servidor.logicajogo.modelodedados.Vitrine;
 
 public enum EstrategiaGeracaoOfertas implements FabricaVitrines {
 	PRODUCAO_DE_OFERTAS_ALEATORIAS {
