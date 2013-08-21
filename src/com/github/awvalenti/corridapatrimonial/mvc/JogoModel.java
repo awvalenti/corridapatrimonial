@@ -52,7 +52,7 @@ public class JogoModel implements InterfaceEntradaJogo, OuvinteVitrine {
 	public synchronized void aoAbrirVitrine(Vitrine vitrine) {
 		this.vitrine = vitrine;
 		for (OuvinteOfertas o : ouvintesOfertas) {
-			o.aoPublicarOfertas(vitrine.getOfertasAtuais());
+			o.aoPublicarOfertas(vitrine.getOfertas());
 		}
 	}
 
@@ -81,7 +81,7 @@ public class JogoModel implements InterfaceEntradaJogo, OuvinteVitrine {
 	}
 
 	private Oferta buscarOfertaPorId(String idOferta) {
-		for (Oferta oferta : vitrine.getOfertasAtuais()) {
+		for (Oferta oferta : vitrine.getOfertas()) {
 			if (oferta.getId().equals(idOferta)) {
 				return oferta;
 			}
