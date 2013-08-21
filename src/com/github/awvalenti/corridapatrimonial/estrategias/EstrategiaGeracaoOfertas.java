@@ -1,7 +1,7 @@
 package com.github.awvalenti.corridapatrimonial.estrategias;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Random;
 
 import com.github.awvalenti.corridapatrimonial.interfaces.FabricaVitrines;
@@ -9,12 +9,8 @@ import com.github.awvalenti.corridapatrimonial.modelodedados.Oferta;
 import com.github.awvalenti.corridapatrimonial.modelodedados.Produto;
 import com.github.awvalenti.corridapatrimonial.modelodedados.Vitrine;
 
-
-
-
-
-public enum EstrategiaProducaoVitrines implements FabricaVitrines {
-	PRODUCAO_DE_OFERTAS_ALEATORIAS {
+public enum EstrategiaGeracaoOfertas implements FabricaVitrines {
+	PRODUCAO_DE_4_OFERTAS_ALEATORIAS {
 		private Random random = new Random();
 
 		private Produto produtoAleatorio() {
@@ -32,7 +28,12 @@ public enum EstrategiaProducaoVitrines implements FabricaVitrines {
 
 		@Override
 		public Vitrine produzirVitrine() {
-			return new Vitrine(Arrays.asList(ofertaAleatoria(), ofertaAleatoria()));
+			ArrayList<Oferta> ofertas = new ArrayList<>();
+			ofertas.add(ofertaAleatoria());
+			ofertas.add(ofertaAleatoria());
+			ofertas.add(ofertaAleatoria());
+			ofertas.add(ofertaAleatoria());
+			return new Vitrine(ofertas);
 		}
 	}
 }

@@ -4,74 +4,97 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.github.awvalenti.corridapatrimonial.estrategias.EstrategiaDeTempoParaProducaoVitrines;
+import com.github.awvalenti.corridapatrimonial.interfaces.GestorFabricaVitrines;
 import com.github.awvalenti.corridapatrimonial.interfaces.FabricaVitrines;
-import com.github.awvalenti.corridapatrimonial.interfaces.InterfaceJogo;
+import com.github.awvalenti.corridapatrimonial.interfaces.InterfaceEntradaJogo;
+import com.github.awvalenti.corridapatrimonial.interfaces.InterfaceSaidaJogo;
+import com.github.awvalenti.corridapatrimonial.interfaces.OuvinteOfertas;
 import com.github.awvalenti.corridapatrimonial.interfaces.OuvinteVitrine;
 import com.github.awvalenti.corridapatrimonial.modelodedados.Jogador;
 import com.github.awvalenti.corridapatrimonial.modelodedados.Oferta;
 import com.github.awvalenti.corridapatrimonial.modelodedados.Vitrine;
 
-
-
-public class JogoModel implements InterfaceJogo, OuvinteVitrine {
+public class JogoModel implements InterfaceEntradaJogo, OuvinteVitrine {
 
 	private List<Jogador> jogadores;
 	private FabricaVitrines fabricaVitrines;
-	private EstrategiaDeTempoParaProducaoVitrines estrategiaDeTempoParaProducaoVitrines;
-	private Set<OuvinteVitrine> observadoresVitrine = new HashSet<>();
+	private GestorFabricaVitrines gestorFabricaVitrines;
+	private Set<OuvinteOfertas> ouvintesOfertas = new HashSet<>();
 	private Vitrine vitrine;
+	private InterfaceSaidaJogo saidaJogo;
 
 	public JogoModel(List<Jogador> jogadores, FabricaVitrines fabricaVitrines,
-			EstrategiaDeTempoParaProducaoVitrines estrategiaDeTempoParaProducaoVitrines) {
+			GestorFabricaVitrines gestorFabricaVitrines,
+			InterfaceSaidaJogo saidaJogo) {
 		this.jogadores = jogadores;
 		this.fabricaVitrines = fabricaVitrines;
-		this.estrategiaDeTempoParaProducaoVitrines = estrategiaDeTempoParaProducaoVitrines;
+		this.gestorFabricaVitrines = gestorFabricaVitrines;
+		this.saidaJogo = saidaJogo;
 	}
 
 	@Override
-	public synchronized void adicionarObservadorVitrine(OuvinteVitrine observador) {
-		observadoresVitrine.add(observador);
+	public synchronized void adicionarOuvinteOfertas(OuvinteOfertas ouvinteOfertas) {
+		ouvintesOfertas.add(ouvinteOfertas);
 	}
 
 	@Override
-	public synchronized void iniciar() {
-		estrategiaDeTempoParaProducaoVitrines.iniciar(fabricaVitrines, this);
+	public synchronized void iniciarJogo() {
+		gestorFabricaVitrines.iniciarExecucao(fabricaVitrines, this);
+	}
+
+	private void finalizarJogo(Jogador vencedor) {
+		gestorFabricaVitrines.finalizarExecucao();
+		ouvintesOfertas.clear();
+		saidaJogo.aoFinalizarJogo(vencedor);
 	}
 
 	@Override
 	public synchronized void aoAbrirVitrine(Vitrine vitrine) {
 		this.vitrine = vitrine;
-		for (OuvinteVitrine o : observadoresVitrine) {
-			o.aoAbrirVitrine(vitrine);
+		for (OuvinteOfertas o : ouvintesOfertas) {
+			o.aoPublicarOfertas(vitrine.getOfertasAtuais());
 		}
 	}
 
 	@Override
 	public synchronized void aoFecharVitrine() {
 		this.vitrine = Vitrine.VAZIA;
-		for (OuvinteVitrine o : observadoresVitrine) {
-			o.aoFecharVitrine();
-		}
 	}
 
 	@Override
 	public synchronized void solicitarCompra(String idJogador, String idOferta) {
-		for (Jogador jogador : jogadores) {
-			if (jogador.getId().equals(idJogador)) {
-				for (Oferta oferta : vitrine.getOfertas()) {
-					if (oferta.getId().equals(idOferta)) {
-						efetivarCompra(jogador, oferta);
-					}
-				}
-			}
+		Jogador jogador = buscarJogadorPorId(idJogador);
+		Oferta oferta = buscarOfertaPorId(idOferta);
+
+		if (jogador != null && oferta != null) {
+			efetivarCompra(jogador, oferta);
 		}
 	}
 
-	private void efetivarCompra(Jogador jogador, Oferta oferta) {
-		System.out.println(jogador + " comprando " + oferta);
+	private Jogador buscarJogadorPorId(String idJogador) {
+		for (Jogador jogador : jogadores) {
+			if (jogador.getId().equals(idJogador)) {
+				return jogador;
+			}
+		}
+		return null;
+	}
 
+	private Oferta buscarOfertaPorId(String idOferta) {
+		for (Oferta oferta : vitrine.getOfertasAtuais()) {
+			if (oferta.getId().equals(idOferta)) {
+				return oferta;
+			}
+		}
+		return null;
+	}
+
+	private void efetivarCompra(Jogador jogador, Oferta oferta) {
+		System.out.println("Vitrine antes: " + vitrine);
 		jogador.comprar(oferta);
+		vitrine.remover(oferta);
+		System.out.println("Vitrine depois: " + vitrine);
+		saidaJogo.aoEfetivarCompra(jogador, oferta);
 		verificarSeJogoAcabou();
 	}
 
@@ -91,11 +114,6 @@ public class JogoModel implements InterfaceJogo, OuvinteVitrine {
 		}
 
 		return null;
-	}
-
-	private void finalizarJogo(Jogador vencedor) {
-		System.out.println("Aopa, venceu!");
-		this.observadoresVitrine.clear();
 	}
 
 }

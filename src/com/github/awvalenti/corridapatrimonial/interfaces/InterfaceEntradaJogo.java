@@ -1,11 +1,12 @@
 package com.github.awvalenti.corridapatrimonial.interfaces;
 
-public interface InterfaceJogo {
+
+public interface InterfaceEntradaJogo {
 
 	void solicitarCompra(String idJogador, String idOferta);
 
-	void iniciar();
+	void iniciarJogo();
 
-	void adicionarObservadorVitrine(OuvinteVitrine observador);
+	void adicionarOuvinteOfertas(OuvinteOfertas ouvinteOfertas);
 
 }

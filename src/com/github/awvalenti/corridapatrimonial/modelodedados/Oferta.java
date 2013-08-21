@@ -4,8 +4,6 @@ import java.math.BigDecimal;
 
 import com.github.awvalenti.corridapatrimonial.util.FormatadorDinheiro;
 
-
-
 public class Oferta {
 
 	private String id;
@@ -15,7 +13,10 @@ public class Oferta {
 	private static volatile int ultimoId = 1;
 
 	public Oferta(Produto produto, BigDecimal preco) {
-		this.id = produto.toString() + "-" + ultimoId++;
+		synchronized (Oferta.class) {
+			this.id = produto.toString() + "-" + ultimoId++;
+		}
+
 		this.produto = produto;
 		this.preco = preco;
 	}
