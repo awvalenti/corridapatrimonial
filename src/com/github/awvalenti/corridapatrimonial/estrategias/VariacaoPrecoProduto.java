@@ -3,11 +3,18 @@ package com.github.awvalenti.corridapatrimonial.estrategias;
 import java.math.BigDecimal;
 
 public enum VariacaoPrecoProduto {
-	COM_DESCONTO(new BigDecimal("0.8")),
-	NORMAL(BigDecimal.ONE),
-	COM_AUMENTO(new BigDecimal("1.4"));
+	DESCONTO(new BigDecimal("0.8")),
+	SEM_ALTERACAO(BigDecimal.ONE),
+	AUMENTO_NORMAL(new BigDecimal("1.4")),
+
+	AUMENTO_ABSURDO(new BigDecimal("2.5")),
+	;
 
 	private BigDecimal fator;
+
+	public static final VariacaoPrecoProduto[] VARIACOES_NORMAIS = new VariacaoPrecoProduto[] {
+		DESCONTO, SEM_ALTERACAO, AUMENTO_NORMAL
+	};
 
 	private VariacaoPrecoProduto(BigDecimal fator) {
 		this.fator = fator;

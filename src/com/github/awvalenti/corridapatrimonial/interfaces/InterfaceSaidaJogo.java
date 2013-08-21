@@ -3,7 +3,7 @@ package com.github.awvalenti.corridapatrimonial.interfaces;
 import com.github.awvalenti.corridapatrimonial.modelodedados.Jogador;
 import com.github.awvalenti.corridapatrimonial.modelodedados.Oferta;
 
-public interface InterfaceSaidaJogo {
+public interface InterfaceSaidaJogo extends OuvinteVitrine {
 
 	void aoFinalizarJogo(Jogador vencedor);
 

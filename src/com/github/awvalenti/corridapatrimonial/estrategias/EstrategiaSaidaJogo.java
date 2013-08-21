@@ -3,6 +3,7 @@ package com.github.awvalenti.corridapatrimonial.estrategias;
 import com.github.awvalenti.corridapatrimonial.interfaces.InterfaceSaidaJogo;
 import com.github.awvalenti.corridapatrimonial.modelodedados.Jogador;
 import com.github.awvalenti.corridapatrimonial.modelodedados.Oferta;
+import com.github.awvalenti.corridapatrimonial.modelodedados.Vitrine;
 
 public enum EstrategiaSaidaJogo implements InterfaceSaidaJogo {
 	SAIDA_NO_CONSOLE {
@@ -14,6 +15,16 @@ public enum EstrategiaSaidaJogo implements InterfaceSaidaJogo {
 		@Override
 		public void aoEfetivarCompra(Jogador jogador, Oferta oferta) {
 			System.out.println(jogador + " comprou " + oferta);
+		}
+
+		@Override
+		public void aoAbrirVitrine(Vitrine vitrine) {
+			System.out.println("Vitrine aberta: " + vitrine);
+		}
+
+		@Override
+		public void aoFecharVitrine() {
+			System.out.println("Vitrine fechada");
 		}
 
 	}

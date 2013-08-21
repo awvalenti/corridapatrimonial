@@ -22,12 +22,12 @@ public class Main implements OuvinteOfertas {
 
 	private InterfaceEntradaJogo jogoModel = new JogoModel(
 		Arrays.asList(
-			new Jogador("j1", new Patrimonio(), BigDecimal.valueOf(5000)),
-			new Jogador("j2", new Patrimonio(), BigDecimal.valueOf(5000)),
-			new Jogador("j3", new Patrimonio(), BigDecimal.valueOf(5000))
+			new Jogador("j1", new Patrimonio(), BigDecimal.valueOf(500000)),
+			new Jogador("j2", new Patrimonio(), BigDecimal.valueOf(500000)),
+			new Jogador("j3", new Patrimonio(), BigDecimal.valueOf(500000))
 		),
-		EstrategiaGeracaoOfertas.PRODUCAO_DE_4_OFERTAS_ALEATORIAS,
-		new EstrategiaProducaoPeriodica(1),
+		EstrategiaGeracaoOfertas.PRODUCAO_DE_OFERTAS_ALEATORIAS,
+		new EstrategiaProducaoPeriodica(1, 1),
 		EstrategiaSaidaJogo.SAIDA_NO_CONSOLE
 	);
 

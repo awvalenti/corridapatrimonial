@@ -45,12 +45,14 @@ public class JogoModel implements InterfaceEntradaJogo, OuvinteVitrine {
 	private void finalizarJogo(Jogador vencedor) {
 		gestorFabricaVitrines.finalizarExecucao();
 		ouvintesOfertas.clear();
+		aoFecharVitrine();
 		saidaJogo.aoFinalizarJogo(vencedor);
 	}
 
 	@Override
 	public synchronized void aoAbrirVitrine(Vitrine vitrine) {
 		this.vitrine = vitrine;
+		saidaJogo.aoAbrirVitrine(vitrine);
 		for (OuvinteOfertas o : ouvintesOfertas) {
 			o.aoPublicarOfertas(vitrine.getOfertas());
 		}
@@ -59,6 +61,7 @@ public class JogoModel implements InterfaceEntradaJogo, OuvinteVitrine {
 	@Override
 	public synchronized void aoFecharVitrine() {
 		this.vitrine = Vitrine.VAZIA;
+		saidaJogo.aoFecharVitrine();
 	}
 
 	@Override

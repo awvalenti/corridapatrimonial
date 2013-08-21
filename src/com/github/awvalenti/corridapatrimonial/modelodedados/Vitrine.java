@@ -5,13 +5,9 @@ import java.util.List;
 
 public class Vitrine {
 
-	public static final Vitrine VAZIA = new Vitrine();
-
 	private List<Oferta> ofertas;
 
-	private Vitrine() {
-		this.ofertas = Collections.emptyList();
-	}
+	public static final Vitrine VAZIA = new Vitrine(Collections.<Oferta>emptyList());
 
 	public Vitrine(List<Oferta> ofertas) {
 		this.ofertas = ofertas;

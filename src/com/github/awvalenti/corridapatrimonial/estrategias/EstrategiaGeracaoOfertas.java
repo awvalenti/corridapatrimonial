@@ -10,20 +10,25 @@ import com.github.awvalenti.corridapatrimonial.modelodedados.Produto;
 import com.github.awvalenti.corridapatrimonial.modelodedados.Vitrine;
 
 public enum EstrategiaGeracaoOfertas implements FabricaVitrines {
-	PRODUCAO_DE_4_OFERTAS_ALEATORIAS {
+	PRODUCAO_DE_OFERTAS_ALEATORIAS {
 		private Random random = new Random();
 
-		private Produto produtoAleatorio() {
-			return Produto.values()[random.nextInt(Produto.values().length)];
+		private <T> T umAleatorioDentre(T[] vetorOpcoes) {
+			return vetorOpcoes[random.nextInt(vetorOpcoes.length)];
 		}
 
 		private BigDecimal fatorVariacaoAleatorio() {
-			return VariacaoPrecoProduto.values()[random.nextInt(VariacaoPrecoProduto.values().length)].getFator();
+			return umAleatorioDentre(VariacaoPrecoProduto.VARIACOES_NORMAIS).getFator();
 		}
 
 		private Oferta ofertaAleatoria() {
-			Produto produto = produtoAleatorio();
+			Produto produto = umAleatorioDentre(Produto.TODOS);
 			return new Oferta(produto, produto.getPrecoNormal().multiply(fatorVariacaoAleatorio()));
+		}
+
+		private Oferta ofertaAbsurda() {
+			Produto produto = umAleatorioDentre(Produto.MAIS_CAROS);
+			return new Oferta(produto, produto.getPrecoNormal().multiply(VariacaoPrecoProduto.AUMENTO_ABSURDO.getFator()));
 		}
 
 		@Override
@@ -32,7 +37,8 @@ public enum EstrategiaGeracaoOfertas implements FabricaVitrines {
 			ofertas.add(ofertaAleatoria());
 			ofertas.add(ofertaAleatoria());
 			ofertas.add(ofertaAleatoria());
-			ofertas.add(ofertaAleatoria());
+			ofertas.add(ofertaAbsurda());
+			ofertas.add(ofertaAbsurda());
 			return new Vitrine(ofertas);
 		}
 	}

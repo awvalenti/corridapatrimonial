@@ -9,32 +9,60 @@ import com.github.awvalenti.corridapatrimonial.interfaces.OuvinteVitrine;
 
 public class EstrategiaProducaoPeriodica implements GestorFabricaVitrines {
 	private final Timer timer = new Timer();
-	private boolean continuarExecutando = true;
-	private long periodo;
+	private volatile boolean continuarExecutando = true;
+	private long duracaoAberta;
+	private long duracaoFechada;
+	private FabricaVitrines fabricaVitrines;
+	private OuvinteVitrine ouvinteVitrine;
 
-	public EstrategiaProducaoPeriodica(long periodo) {
-		this.periodo = periodo;
+	public EstrategiaProducaoPeriodica(long duracaoAberta, long duracaoFechada) {
+		this.duracaoAberta = duracaoAberta;
+		this.duracaoFechada = duracaoFechada;
 	}
 
 	@Override
+	@SuppressWarnings("hiding")
 	public void iniciarExecucao(final FabricaVitrines fabricaVitrines, final OuvinteVitrine ouvinteVitrine) {
-		ouvinteVitrine.aoAbrirVitrine(fabricaVitrines.produzirVitrine());
+		this.fabricaVitrines = fabricaVitrines;
+		this.ouvinteVitrine = ouvinteVitrine;
 
+		agendarAbertura();
+	}
+
+	private void agendarAbertura() {
 		timer.schedule(new TimerTask() {
 			@Override
 			public void run() {
-				if (continuarExecutando) {
-					ouvinteVitrine.aoFecharVitrine();
+				if (verificarAtividadeTimer()) {
 					ouvinteVitrine.aoAbrirVitrine(fabricaVitrines.produzirVitrine());
-				} else {
-					timer.cancel();
+					agendarFechamento();
 				}
 			}
-		}, periodo, periodo);
+		}, duracaoFechada);
+	}
+
+	private void agendarFechamento() {
+		timer.schedule(new TimerTask() {
+			@Override
+			public void run() {
+				if (verificarAtividadeTimer()) {
+					ouvinteVitrine.aoFecharVitrine();
+					agendarAbertura();
+				}
+			}
+		}, duracaoAberta);
+	}
+
+	private synchronized boolean verificarAtividadeTimer() {
+		if (!continuarExecutando) {
+			timer.cancel();
+		}
+
+		return continuarExecutando;
 	}
 
 	@Override
-	public void finalizarExecucao() {
+	public synchronized void finalizarExecucao() {
 		continuarExecutando = false;
 	}
 

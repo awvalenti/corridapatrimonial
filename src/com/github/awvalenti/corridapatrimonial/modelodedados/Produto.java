@@ -3,11 +3,20 @@ package com.github.awvalenti.corridapatrimonial.modelodedados;
 import java.math.BigDecimal;
 
 public enum Produto {
-	MESA(1000),
-	COMPUTADOR(1500),
-	MAQUINA_DE_CAFE(100);
+	MAQUINA_DE_CAFE(100),
+	PO_DE_CAFE(10),
+	CADEIRAS(500),
+	MESA(900),
+	COMPUTADOR_PESSOAL(1500),
+	FOGAO(1000),
+	GELADEIRA(2000),
+	SERVIDOR(5000),
+	;
 
 	private BigDecimal precoNormal;
+
+	public static final Produto[] TODOS = values();
+	public static final Produto[] MAIS_CAROS = new Produto[] { FOGAO, GELADEIRA, SERVIDOR };
 
 	Produto(int precoNormal) {
 		this(BigDecimal.valueOf(precoNormal));
