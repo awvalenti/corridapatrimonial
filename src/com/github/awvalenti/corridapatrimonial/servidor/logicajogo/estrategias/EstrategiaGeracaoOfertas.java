@@ -33,7 +33,7 @@ public enum EstrategiaGeracaoOfertas implements FabricaVitrines {
 
 		@Override
 		public Vitrine produzirVitrine() {
-			ArrayList<Oferta> ofertas = new ArrayList<>();
+			ArrayList<Oferta> ofertas = new ArrayList<Oferta>();
 			ofertas.add(ofertaAleatoria());
 			ofertas.add(ofertaAleatoria());
 			ofertas.add(ofertaAleatoria());

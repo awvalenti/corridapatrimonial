@@ -7,7 +7,7 @@ import java.util.TreeMap;
 
 public class Patrimonio {
 
-	private Map<Produto, Integer> itens = new TreeMap<>();
+	private Map<Produto, Integer> itens = new TreeMap<Produto, Integer>();
 
 	private static final Collection<Produto> CACHE_TODOS_PRODUTOS = Arrays.asList(Produto.TODOS);
 

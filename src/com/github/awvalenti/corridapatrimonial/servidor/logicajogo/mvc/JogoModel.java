@@ -1,5 +1,6 @@
 package com.github.awvalenti.corridapatrimonial.servidor.logicajogo.mvc;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -16,20 +17,30 @@ import com.github.awvalenti.corridapatrimonial.servidor.logicajogo.modelodedados
 
 public class JogoModel implements InterfaceEntradaJogo, OuvinteVitrine {
 
-	private List<Jogador> jogadores;
+	private List<Jogador> jogadores = new ArrayList<Jogador>();
 	private FabricaVitrines fabricaVitrines;
 	private GestorFabricaVitrines gestorFabricaVitrines;
-	private Set<OuvinteOfertas> ouvintesOfertas = new HashSet<>();
+	private Set<OuvinteOfertas> ouvintesOfertas = new HashSet<OuvinteOfertas>();
 	private Vitrine vitrine;
 	private InterfaceSaidaJogo saidaJogo;
 
-	public JogoModel(List<Jogador> jogadores, FabricaVitrines fabricaVitrines,
-			GestorFabricaVitrines gestorFabricaVitrines,
-			InterfaceSaidaJogo saidaJogo) {
-		this.jogadores = jogadores;
+	public JogoModel(FabricaVitrines fabricaVitrines, GestorFabricaVitrines gestorFabricaVitrines, InterfaceSaidaJogo saidaJogo) {
 		this.fabricaVitrines = fabricaVitrines;
 		this.gestorFabricaVitrines = gestorFabricaVitrines;
 		this.saidaJogo = saidaJogo;
+	}
+
+	@Override
+	public void adicionarJogador(Jogador jogador) {
+		jogadores.add(jogador);
+	}
+
+	@Override
+	@SuppressWarnings("hiding")
+	public void adicionarJogadores(Jogador... jogadores) {
+		for (Jogador jogador : jogadores) {
+			adicionarJogador(jogador);
+		}
 	}
 
 	@Override

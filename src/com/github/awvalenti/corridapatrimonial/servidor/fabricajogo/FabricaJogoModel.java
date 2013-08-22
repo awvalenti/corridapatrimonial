@@ -3,7 +3,6 @@ package com.github.awvalenti.corridapatrimonial.servidor.fabricajogo;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
-import java.util.Arrays;
 import java.util.Properties;
 
 import com.github.awvalenti.corridapatrimonial.servidor.entradasaida.SaidaJogoNoConsole;
@@ -43,16 +42,17 @@ public class FabricaJogoModel {
 
 	private static InterfaceEntradaJogo fabricarJogoModel(int dinheiroInicial, long duracaoVitrineAberta,
 			long duracaoVitrineFechada) {
-		return new JogoModel(
-			Arrays.asList(
-				new Jogador("j1", new Patrimonio(), BigDecimal.valueOf(dinheiroInicial)),
-				new Jogador("j2", new Patrimonio(), BigDecimal.valueOf(dinheiroInicial)),
-				new Jogador("j3", new Patrimonio(), BigDecimal.valueOf(dinheiroInicial))
-			),
+		JogoModel jogoModel = new JogoModel(
 			EstrategiaGeracaoOfertas.PRODUCAO_DE_OFERTAS_ALEATORIAS,
 			new EstrategiaProducaoPeriodica(duracaoVitrineAberta, duracaoVitrineFechada),
 			SaidaJogoNoConsole.INSTANCIA
 		);
+
+		jogoModel.adicionarJogadores(new Jogador("j1", new Patrimonio(), BigDecimal.valueOf(dinheiroInicial)),
+				new Jogador("j2", new Patrimonio(), BigDecimal.valueOf(dinheiroInicial)),
+				new Jogador("j3", new Patrimonio(), BigDecimal.valueOf(dinheiroInicial)));
+
+		return jogoModel;
 	}
 
 }
