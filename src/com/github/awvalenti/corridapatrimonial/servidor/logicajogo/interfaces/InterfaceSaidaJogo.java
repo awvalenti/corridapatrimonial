@@ -7,8 +7,10 @@ public interface InterfaceSaidaJogo extends OuvinteVitrine {
 
 	void aoEntrarJogador(Jogador jogador);
 
-	void aoFinalizarJogo(Jogador vencedor);
+	void aoIniciarJogo();
 
 	void aoEfetivarCompra(Jogador jogador, Oferta oferta);
+
+	void aoFinalizarJogo(Jogador vencedor);
 
 }

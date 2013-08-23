@@ -2,7 +2,7 @@ package com.github.awvalenti.corridapatrimonial.servidor.logicajogo.modelodedado
 
 import java.math.BigDecimal;
 
-import com.github.awvalenti.corridapatrimonial.servidor.logicajogo.util.FormatadorDinheiro;
+import com.github.awvalenti.corridapatrimonial.util.FormatadorDinheiro;
 
 public class Oferta {
 

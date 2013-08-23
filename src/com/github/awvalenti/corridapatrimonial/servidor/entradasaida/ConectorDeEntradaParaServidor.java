@@ -24,7 +24,7 @@ public class ConectorDeEntradaParaServidor {
 		geradorChaves = new GeradorChaves();
 	}
 
-	public void iniciar() throws IOException {
+	public void iniciarEscutaDeClientes() throws IOException {
 		@SuppressWarnings("resource")
 		ServerSocket serverSocket = new ServerSocket(portaServidor);
 		for (;;) {
@@ -37,10 +37,11 @@ public class ConectorDeEntradaParaServidor {
 			MensagemResultanteExecucaoComando mensagemResultante = new EntradaParaServidorViaInputStream(chaveCliente,
 					socketCliente.getInputStream(), processadorComandosCifrados).lerETratarLinhaComando();
 
+			String mensagemParaCliente = mensagemResultante.name();
+
 			// XXX Feio: if de enum
-			String mensagemParaCliente = "OK";
 			if (mensagemResultante == MensagemResultanteExecucaoComando.JOGADOR_ENTROU) {
-				mensagemParaCliente = "Sua chave e': " + chaveCliente;
+				mensagemParaCliente = "Sua chave e' " + chaveCliente;
 			}
 
 			OutputStream outputStream = socketCliente.getOutputStream();

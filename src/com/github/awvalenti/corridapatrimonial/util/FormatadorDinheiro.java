@@ -1,4 +1,4 @@
-package com.github.awvalenti.corridapatrimonial.servidor.logicajogo.util;
+package com.github.awvalenti.corridapatrimonial.util;
 
 import java.math.BigDecimal;
 import java.text.NumberFormat;

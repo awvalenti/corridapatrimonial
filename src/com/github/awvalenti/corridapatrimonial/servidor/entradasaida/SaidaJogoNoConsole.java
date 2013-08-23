@@ -13,13 +13,8 @@ public enum SaidaJogoNoConsole implements InterfaceSaidaJogo {
 		}
 
 		@Override
-		public void aoFinalizarJogo(Jogador vencedor) {
-			System.out.println("Fim de jogo! Vencedor: " + vencedor);
-		}
-
-		@Override
-		public void aoEfetivarCompra(Jogador jogador, Oferta oferta) {
-			System.out.println(jogador + " comprou " + oferta);
+		public void aoIniciarJogo() {
+			System.out.println("Jogo comecou!");
 		}
 
 		@Override
@@ -30,6 +25,16 @@ public enum SaidaJogoNoConsole implements InterfaceSaidaJogo {
 		@Override
 		public void aoFecharVitrine() {
 			System.out.println("Vitrine fechada");
+		}
+
+		@Override
+		public void aoEfetivarCompra(Jogador jogador, Oferta oferta) {
+			System.out.println(jogador + " comprou " + oferta);
+		}
+
+		@Override
+		public void aoFinalizarJogo(Jogador vencedor) {
+			System.out.println("Fim de jogo! Vencedor: " + vencedor);
 		}
 
 	}

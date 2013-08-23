@@ -23,7 +23,7 @@ public class MainTesteIntegracao {
 			public void run() {
 				try {
 					new ConectorDeEntradaParaServidor(8080, new ProcessadorComandosCifrados(
-							algoritmoCriptografico, new ExecutorComandos(entradaJogo))).iniciar();
+							algoritmoCriptografico, new ExecutorComandos(entradaJogo))).iniciarEscutaDeClientes();
 				} catch (IOException e) {
 					throw new RuntimeException(e);
 				}

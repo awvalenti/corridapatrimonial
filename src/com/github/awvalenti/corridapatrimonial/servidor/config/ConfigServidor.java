@@ -1,11 +1,9 @@
 package com.github.awvalenti.corridapatrimonial.servidor.config;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Properties;
 
 import com.github.awvalenti.corridapatrimonial.servidor.entradasaida.criptografia.AlgoritmoCriptografico;
-import com.github.awvalenti.corridapatrimonial.servidor.fabricasconcretas.FabricaJogoModel;
+import com.github.awvalenti.corridapatrimonial.util.LeitorArquivoProperties;
 
 // XXX Sem injecao de dependencia
 public enum ConfigServidor {
@@ -16,7 +14,8 @@ public enum ConfigServidor {
 	private Properties properties;
 
 	private ConfigServidor() {
-		properties = lerArquivoProperties();
+		properties = LeitorArquivoProperties.lerArquivoProperties(
+				"/com/github/awvalenti/corridapatrimonial/servidor/config/ConfigServidor.properties");
 	}
 
 	// XXX Criar um getter para cada propriedade
@@ -24,19 +23,9 @@ public enum ConfigServidor {
 		return properties.getProperty(nomePropriedade);
 	}
 
-	private static Properties lerArquivoProperties() {
-		Properties config = new Properties();
-		try {
-			final String caminho = "/com/github/awvalenti/corridapatrimonial/servidor/ConfigServidor.properties";
-			InputStream resourceAsStream = FabricaJogoModel.class.getResourceAsStream(caminho);
-			if (resourceAsStream == null) {
-				throw new IllegalArgumentException("Recurso nao encontrado em " + caminho);
-			}
-			config.load(resourceAsStream);
-			return config;
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
+	// XXX Codigo replicado
+	public int getIntProperty(String nomePropriedade) {
+		return Integer.parseInt(getProperty(nomePropriedade));
 	}
 
 	public AlgoritmoCriptografico getAlgoritmoCriptografico() {

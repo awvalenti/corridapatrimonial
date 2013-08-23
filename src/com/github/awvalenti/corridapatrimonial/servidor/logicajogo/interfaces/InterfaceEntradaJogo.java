@@ -1,13 +1,15 @@
 package com.github.awvalenti.corridapatrimonial.servidor.logicajogo.interfaces;
 
+import com.github.awvalenti.corridapatrimonial.servidor.entradasaida.comandos.MensagemResultanteExecucaoComando;
+
 public interface InterfaceEntradaJogo {
 
 	void adicionarOuvinteOfertas(OuvinteOfertas ouvinteOfertas);
 
-	void criarNovoJogador(String idJogador);
+	MensagemResultanteExecucaoComando criarNovoJogador(String idJogador);
 
-	void iniciarJogo();
+	MensagemResultanteExecucaoComando iniciarJogo();
 
-	void solicitarCompra(String idJogador, String idOferta);
+	MensagemResultanteExecucaoComando solicitarCompra(String idJogador, String idOferta);
 
 }

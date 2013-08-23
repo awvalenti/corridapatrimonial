@@ -6,8 +6,7 @@ enum Comando {
 	ENTRAR {
 		@Override
 		public MensagemResultanteExecucaoComando executar(InterfaceEntradaJogo entradaJogo, String[] args) {
-			entradaJogo.criarNovoJogador(args[1]);
-			return MensagemResultanteExecucaoComando.JOGADOR_ENTROU;
+			return entradaJogo.criarNovoJogador(args[1]);
 		}
 	},
 

@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.github.awvalenti.corridapatrimonial.servidor.entradasaida.comandos.MensagemResultanteExecucaoComando;
 import com.github.awvalenti.corridapatrimonial.servidor.logicajogo.interfaces.FabricaJogador;
 import com.github.awvalenti.corridapatrimonial.servidor.logicajogo.interfaces.FabricaVitrines;
 import com.github.awvalenti.corridapatrimonial.servidor.logicajogo.interfaces.GestorFabricaVitrines;
@@ -38,11 +39,14 @@ public class JogoModel implements InterfaceEntradaJogo, OuvinteVitrine {
 	}
 
 	@Override
-	public synchronized void criarNovoJogador(String idJogador) {
-		if (estado.aceitaCriarJogador()) {
+	public synchronized MensagemResultanteExecucaoComando criarNovoJogador(String idJogador) {
+		if (estado.aceitaCriarJogador() && buscarJogadorPorId(idJogador) == null) {
 			Jogador jogador = fabricaJogador.fabricar(idJogador);
 			jogadores.add(jogador);
 			saidaJogo.aoEntrarJogador(jogador);
+			return MensagemResultanteExecucaoComando.JOGADOR_ENTROU;
+		} else {
+			return MensagemResultanteExecucaoComando.COMANDO_REJEITADO;
 		}
 	}
 
@@ -52,10 +56,14 @@ public class JogoModel implements InterfaceEntradaJogo, OuvinteVitrine {
 	}
 
 	@Override
-	public synchronized void iniciarJogo() {
+	public synchronized MensagemResultanteExecucaoComando iniciarJogo() {
 		if (estado.aceitaIniciarJogo()) {
 			estado = EstadoJogoModel.RODANDO;
+			saidaJogo.aoIniciarJogo();
 			gestorFabricaVitrines.iniciarExecucao(fabricaVitrines, this);
+			return MensagemResultanteExecucaoComando.OK;
+		} else {
+			return MensagemResultanteExecucaoComando.COMANDO_REJEITADO;
 		}
 	}
 
@@ -86,7 +94,7 @@ public class JogoModel implements InterfaceEntradaJogo, OuvinteVitrine {
 	}
 
 	@Override
-	public synchronized void solicitarCompra(String idJogador, String idOferta) {
+	public synchronized MensagemResultanteExecucaoComando solicitarCompra(String idJogador, String idOferta) {
 		if (estado.aceitaSolicitacaoCompra()) {
 			Jogador jogador = buscarJogadorPorId(idJogador);
 			Oferta oferta = buscarOfertaPorId(idOferta);
@@ -94,6 +102,9 @@ public class JogoModel implements InterfaceEntradaJogo, OuvinteVitrine {
 			if (jogador != null && oferta != null) {
 				efetivarCompra(jogador, oferta);
 			}
+			return MensagemResultanteExecucaoComando.OK;
+		} else {
+			return MensagemResultanteExecucaoComando.COMANDO_REJEITADO;
 		}
 	}
 
