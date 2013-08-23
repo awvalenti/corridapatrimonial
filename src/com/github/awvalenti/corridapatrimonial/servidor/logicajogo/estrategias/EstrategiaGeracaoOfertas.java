@@ -21,18 +21,19 @@ public enum EstrategiaGeracaoOfertas implements FabricaVitrines {
 			return umAleatorioDentre(VariacaoPrecoProduto.VARIACOES_NORMAIS).getFator();
 		}
 
-		private Oferta ofertaAleatoria() {
+		private Oferta ofertaAleatoria(int idOferta) {
 			Produto produto = umAleatorioDentre(Produto.TODOS);
-			return new Oferta(produto, produto.getPrecoNormal().multiply(fatorVariacaoAleatorio()));
+			return new Oferta(String.valueOf(idOferta), produto, produto.getPrecoNormal().multiply(fatorVariacaoAleatorio()));
 		}
 
 		@Override
 		public Vitrine produzirVitrine() {
 			ArrayList<Oferta> ofertas = new ArrayList<Oferta>();
-			ofertas.add(ofertaAleatoria());
-			ofertas.add(ofertaAleatoria());
-			ofertas.add(ofertaAleatoria());
-			ofertas.add(ofertaAleatoria());
+			int id = 1;
+			ofertas.add(ofertaAleatoria(id++));
+			ofertas.add(ofertaAleatoria(id++));
+			ofertas.add(ofertaAleatoria(id++));
+			ofertas.add(ofertaAleatoria(id++));
 			return new Vitrine(ofertas);
 		}
 	}

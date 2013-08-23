@@ -10,13 +10,8 @@ public class Oferta {
 	private Produto produto;
 	private BigDecimal preco;
 
-	private static volatile int ultimoId = 1;
-
-	public Oferta(Produto produto, BigDecimal preco) {
-		synchronized (Oferta.class) {
-			this.id = produto.toString() + "-" + ultimoId++;
-		}
-
+	public Oferta(String id, Produto produto, BigDecimal preco) {
+		this.id = id;
 		this.produto = produto;
 		this.preco = preco;
 	}
@@ -35,7 +30,7 @@ public class Oferta {
 
 	@Override
 	public String toString() {
-		return produto.toString() + " a " + FormatadorDinheiro.formatar(preco);
+		return id + ") " + produto.toString() + " a " + FormatadorDinheiro.formatar(preco);
 	}
 
 }

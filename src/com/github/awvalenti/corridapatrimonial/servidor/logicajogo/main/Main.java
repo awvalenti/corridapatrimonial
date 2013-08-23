@@ -24,8 +24,16 @@ public class Main implements OuvinteOfertas {
 
 	@Override
 	public void aoPublicarOfertas(List<Oferta> ofertas) {
-		executorComandos.executarLinhaComando("comprar j " + ofertas.get(0).getId());
-		executorComandos.executarLinhaComando("comprar j1 " + ofertas.get(0).getId());
+		String idOferta0 = ofertas.get(0).getId();
+		String idOferta1 = ofertas.get(1).getId();
+		String idOferta2 = ofertas.get(2).getId();
+		String idOferta3 = ofertas.get(3).getId();
+		executorComandos.executarLinhaComando("comprar j2 " + idOferta1);
+		executorComandos.executarLinhaComando("comprar j2 " + idOferta1);
+		executorComandos.executarLinhaComando("comprar j2 " + idOferta1);
+		executorComandos.executarLinhaComando("comprar j1 " + idOferta3);
+		executorComandos.executarLinhaComando("comprar j2 " + idOferta3);
+		executorComandos.executarLinhaComando("comprar j2 " + idOferta2);
 	}
 
 }
