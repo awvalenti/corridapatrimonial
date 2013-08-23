@@ -12,7 +12,7 @@ public class EntradaParaServidorViaInputStream {
 	private InputStream inputStream;
 	private ExecutorComandos executorComandos;
 
-	public EntradaParaServidorViaInputStream(InputStream inputStream, ExecutorComandos executorComandos) throws IOException {
+	public EntradaParaServidorViaInputStream(InputStream inputStream, ExecutorComandos executorComandos) {
 		this.inputStream = inputStream;
 		this.executorComandos = executorComandos;
 	}
