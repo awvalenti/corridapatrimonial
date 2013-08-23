@@ -9,16 +9,16 @@ import com.github.awvalenti.corridapatrimonial.servidor.entradasaida.comandos.Ex
 
 public class EntradaJogoViaSocket {
 
-	private Socket socketCliente;
+	private Socket socketVindoDoCliente;
 	private ExecutorComandos executorComandos;
 
-	public EntradaJogoViaSocket(Socket socketCliente, ExecutorComandos executorComandos) throws IOException {
-		this.socketCliente = socketCliente;
+	public EntradaJogoViaSocket(Socket socketVindoDoCliente, ExecutorComandos executorComandos) throws IOException {
+		this.socketVindoDoCliente = socketVindoDoCliente;
 		this.executorComandos = executorComandos;
 	}
 
-	public void lerETratarComando() throws IOException {
-		executorComandos.executarLinhaComando(new BufferedReader(new InputStreamReader(socketCliente.getInputStream())).readLine());
+	public void lerETratarLinhaComando() throws IOException {
+		executorComandos.executarLinhaComando(new BufferedReader(new InputStreamReader(socketVindoDoCliente.getInputStream())).readLine());
 	}
 
 }
