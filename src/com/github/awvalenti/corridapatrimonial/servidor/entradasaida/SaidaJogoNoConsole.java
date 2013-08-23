@@ -8,6 +8,11 @@ import com.github.awvalenti.corridapatrimonial.servidor.logicajogo.modelodedados
 public enum SaidaJogoNoConsole implements InterfaceSaidaJogo {
 	INSTANCIA {
 		@Override
+		public void aoEntrarJogador(Jogador jogador) {
+			System.out.println("Novo jogador: " + jogador);
+		}
+
+		@Override
 		public void aoFinalizarJogo(Jogador vencedor) {
 			System.out.println("Fim de jogo! Vencedor: " + vencedor);
 		}

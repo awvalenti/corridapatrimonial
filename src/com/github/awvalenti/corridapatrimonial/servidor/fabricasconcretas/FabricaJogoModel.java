@@ -41,18 +41,12 @@ public class FabricaJogoModel {
 	private static InterfaceEntradaJogo fabricarJogoModel(BigDecimal dinheiroInicial, long duracaoVitrineAberta,
 			long duracaoVitrineFechada) {
 
-		JogoModel jogoModel = new JogoModel(
+		return new JogoModel(
 			EstrategiaGeracaoOfertas.PRODUCAO_DE_OFERTAS_ALEATORIAS,
 			new EstrategiaProducaoPeriodica(duracaoVitrineAberta, duracaoVitrineFechada),
 			new FabricaJogadorPadrao(dinheiroInicial),
 			SaidaJogoNoConsole.INSTANCIA
 		);
-
-		jogoModel.criarNovoJogador("j1");
-		jogoModel.criarNovoJogador("j2");
-		jogoModel.criarNovoJogador("j3");
-
-		return jogoModel;
 	}
 
 }

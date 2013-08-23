@@ -25,9 +25,12 @@ public class JogoModel implements InterfaceEntradaJogo, OuvinteVitrine {
 	private Vitrine vitrine;
 	private InterfaceSaidaJogo saidaJogo;
 	private FabricaJogador fabricaJogador;
+	private EstadoJogoModel estado;
 
 	public JogoModel(FabricaVitrines fabricaVitrines, GestorFabricaVitrines gestorFabricaVitrines, FabricaJogador fabricaJogador,
 			InterfaceSaidaJogo saidaJogo) {
+		estado = EstadoJogoModel.AGUARDANDO_INICIO;
+
 		this.fabricaVitrines = fabricaVitrines;
 		this.gestorFabricaVitrines = gestorFabricaVitrines;
 		this.fabricaJogador = fabricaJogador;
@@ -36,7 +39,11 @@ public class JogoModel implements InterfaceEntradaJogo, OuvinteVitrine {
 
 	@Override
 	public synchronized void criarNovoJogador(String idJogador) {
-		jogadores.add(fabricaJogador.fabricar(idJogador));
+		if (estado.aceitaCriarJogador()) {
+			Jogador jogador = fabricaJogador.fabricar(idJogador);
+			jogadores.add(jogador);
+			saidaJogo.aoEntrarJogador(jogador);
+		}
 	}
 
 	@Override
@@ -46,14 +53,20 @@ public class JogoModel implements InterfaceEntradaJogo, OuvinteVitrine {
 
 	@Override
 	public synchronized void iniciarJogo() {
-		gestorFabricaVitrines.iniciarExecucao(fabricaVitrines, this);
+		if (estado.aceitaIniciarJogo()) {
+			estado = EstadoJogoModel.RODANDO;
+			gestorFabricaVitrines.iniciarExecucao(fabricaVitrines, this);
+		}
 	}
 
 	private void finalizarJogo(Jogador vencedor) {
-		gestorFabricaVitrines.finalizarExecucao();
-		ouvintesOfertas.clear();
-		aoFecharVitrine();
-		saidaJogo.aoFinalizarJogo(vencedor);
+		if (estado.aceitaFinalizarJogo()) {
+			estado = EstadoJogoModel.FINALIZADO;
+			gestorFabricaVitrines.finalizarExecucao();
+			ouvintesOfertas.clear();
+			aoFecharVitrine();
+			saidaJogo.aoFinalizarJogo(vencedor);
+		}
 	}
 
 	@Override
@@ -74,11 +87,13 @@ public class JogoModel implements InterfaceEntradaJogo, OuvinteVitrine {
 
 	@Override
 	public synchronized void solicitarCompra(String idJogador, String idOferta) {
-		Jogador jogador = buscarJogadorPorId(idJogador);
-		Oferta oferta = buscarOfertaPorId(idOferta);
+		if (estado.aceitaSolicitacaoCompra()) {
+			Jogador jogador = buscarJogadorPorId(idJogador);
+			Oferta oferta = buscarOfertaPorId(idOferta);
 
-		if (jogador != null && oferta != null) {
-			efetivarCompra(jogador, oferta);
+			if (jogador != null && oferta != null) {
+				efetivarCompra(jogador, oferta);
+			}
 		}
 	}
 

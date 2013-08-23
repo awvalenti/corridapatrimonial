@@ -6,7 +6,7 @@ enum Comando {
 	ENTRAR {
 		@Override
 		public void executar(InterfaceEntradaJogo entradaJogo, String[] args) {
-			entradaJogo.criarNovoJogador(args[1]);
+			entradaJogo.criarNovoJogador(args[0]);
 		}
 	},
 

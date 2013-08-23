@@ -5,6 +5,8 @@ import com.github.awvalenti.corridapatrimonial.servidor.logicajogo.modelodedados
 
 public interface InterfaceSaidaJogo extends OuvinteVitrine {
 
+	void aoEntrarJogador(Jogador jogador);
+
 	void aoFinalizarJogo(Jogador vencedor);
 
 	void aoEfetivarCompra(Jogador jogador, Oferta oferta);

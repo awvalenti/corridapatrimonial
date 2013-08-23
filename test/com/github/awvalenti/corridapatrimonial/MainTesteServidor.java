@@ -1,4 +1,4 @@
-package com.github.awvalenti.corridapatrimonial.servidor.logicajogo.main;
+package com.github.awvalenti.corridapatrimonial;
 
 import java.util.List;
 
@@ -8,15 +8,20 @@ import com.github.awvalenti.corridapatrimonial.servidor.logicajogo.interfaces.In
 import com.github.awvalenti.corridapatrimonial.servidor.logicajogo.interfaces.OuvinteOfertas;
 import com.github.awvalenti.corridapatrimonial.servidor.logicajogo.modelodedados.Oferta;
 
-public class Main implements OuvinteOfertas {
+public class MainTesteServidor implements OuvinteOfertas {
 
 	public static void main(String[] args) {
-		new Main(FabricaJogoModel.criarJogoModel());
+		InterfaceEntradaJogo entradaJogo = FabricaJogoModel.criarJogoModel();
+		entradaJogo.criarNovoJogador("j1");
+		entradaJogo.criarNovoJogador("j2");
+		entradaJogo.criarNovoJogador("j3");
+
+		new MainTesteServidor(entradaJogo);
 	}
 
 	private ExecutorComandos executorComandos;
 
-	public Main(InterfaceEntradaJogo interfaceEntradaJogo) {
+	public MainTesteServidor(InterfaceEntradaJogo interfaceEntradaJogo) {
 		interfaceEntradaJogo.adicionarOuvinteOfertas(this);
 		interfaceEntradaJogo.iniciarJogo();
 		executorComandos = new ExecutorComandos(interfaceEntradaJogo);
