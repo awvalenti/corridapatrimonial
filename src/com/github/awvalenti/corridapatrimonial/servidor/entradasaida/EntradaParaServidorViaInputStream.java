@@ -2,23 +2,23 @@ package com.github.awvalenti.corridapatrimonial.servidor.entradasaida;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.Socket;
 
 import com.github.awvalenti.corridapatrimonial.servidor.entradasaida.comandos.ExecutorComandos;
 
-public class EntradaJogoViaSocket {
+public class EntradaParaServidorViaInputStream {
 
-	private Socket socketVindoDoCliente;
+	private InputStream inputStream;
 	private ExecutorComandos executorComandos;
 
-	public EntradaJogoViaSocket(Socket socketVindoDoCliente, ExecutorComandos executorComandos) throws IOException {
-		this.socketVindoDoCliente = socketVindoDoCliente;
+	public EntradaParaServidorViaInputStream(InputStream inputStream, ExecutorComandos executorComandos) throws IOException {
+		this.inputStream = inputStream;
 		this.executorComandos = executorComandos;
 	}
 
 	public void lerETratarLinhaComando() throws IOException {
-		executorComandos.executarLinhaComando(new BufferedReader(new InputStreamReader(socketVindoDoCliente.getInputStream())).readLine());
+		executorComandos.executarLinhaComando(new BufferedReader(new InputStreamReader(inputStream)).readLine());
 	}
 
 }
