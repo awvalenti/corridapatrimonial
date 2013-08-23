@@ -3,8 +3,11 @@ package com.github.awvalenti.corridapatrimonial;
 import java.io.IOException;
 
 import com.github.awvalenti.corridapatrimonial.cliente.ConectorDeSaidaDoCliente;
+import com.github.awvalenti.corridapatrimonial.servidor.config.ConfigServidor;
 import com.github.awvalenti.corridapatrimonial.servidor.entradasaida.ConectorDeEntradaParaServidor;
 import com.github.awvalenti.corridapatrimonial.servidor.entradasaida.comandos.ExecutorComandos;
+import com.github.awvalenti.corridapatrimonial.servidor.entradasaida.comandos.ProcessadorComandosCifrados;
+import com.github.awvalenti.corridapatrimonial.servidor.entradasaida.criptografia.AlgoritmoCriptografico;
 import com.github.awvalenti.corridapatrimonial.servidor.fabricasconcretas.FabricaJogoModel;
 import com.github.awvalenti.corridapatrimonial.servidor.logicajogo.interfaces.InterfaceEntradaJogo;
 
@@ -13,11 +16,14 @@ public class MainTesteIntegracao {
 	public static void main(String[] args) throws InterruptedException, IOException {
 		final InterfaceEntradaJogo entradaJogo = FabricaJogoModel.criarJogoModel();
 
+		final AlgoritmoCriptografico algoritmoCriptografico = ConfigServidor.INSTANCIA.getAlgoritmoCriptografico();
+
 		new Thread() {
 			@Override
 			public void run() {
 				try {
-					new ConectorDeEntradaParaServidor(8080, new ExecutorComandos(entradaJogo)).iniciar();
+					new ConectorDeEntradaParaServidor(8080, new ProcessadorComandosCifrados(
+							algoritmoCriptografico, new ExecutorComandos(entradaJogo))).iniciar();
 				} catch (IOException e) {
 					throw new RuntimeException(e);
 				}
