@@ -2,6 +2,8 @@ package com.github.awvalenti.corridapatrimonial.servidor.entradasaida.comandos;
 
 import java.util.Arrays;
 
+import com.github.awvalenti.corridapatrimonial.servidor.entradasaida.mensagens.MensagemFixa;
+import com.github.awvalenti.corridapatrimonial.servidor.entradasaida.mensagens.MensagemResultanteExecucaoComando;
 import com.github.awvalenti.corridapatrimonial.servidor.logicajogo.interfaces.InterfaceEntradaJogo;
 
 enum Comando {
@@ -12,10 +14,10 @@ enum Comando {
 		}
 	},
 
-	COMPRAR(3) {
+	COMPRAR(4) {
 		@Override
 		MensagemResultanteExecucaoComando executarEfetivamente(InterfaceEntradaJogo entradaJogo, String[] args) {
-			return entradaJogo.solicitarCompra(args[1], args[2]);
+			return entradaJogo.solicitarCompra(args[1], args[2], args[3]);
 		}
 	},
 
@@ -25,7 +27,7 @@ enum Comando {
 			// XXX Feio
 			System.err.println("Comando nao reconhecido: " + args[0]);
 
-			return MensagemResultanteExecucaoComando.COMANDO_NAO_RECONHECIDO;
+			return MensagemFixa.COMANDO_NAO_RECONHECIDO;
 		}
 	},
 	;
@@ -47,7 +49,7 @@ enum Comando {
 			// XXX Feio
 			System.err.println("COMANDO_REJEITADO: " + Arrays.toString(args));
 
-			return MensagemResultanteExecucaoComando.COMANDO_REJEITADO;
+			return MensagemFixa.COMANDO_REJEITADO;
 		}
 	}
 

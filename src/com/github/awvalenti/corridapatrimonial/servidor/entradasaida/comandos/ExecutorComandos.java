@@ -1,5 +1,6 @@
 package com.github.awvalenti.corridapatrimonial.servidor.entradasaida.comandos;
 
+import com.github.awvalenti.corridapatrimonial.servidor.entradasaida.mensagens.MensagemResultanteExecucaoComando;
 import com.github.awvalenti.corridapatrimonial.servidor.logicajogo.interfaces.InterfaceEntradaJogo;
 
 public class ExecutorComandos {

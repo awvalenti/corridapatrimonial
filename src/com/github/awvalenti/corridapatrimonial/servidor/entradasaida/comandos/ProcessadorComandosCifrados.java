@@ -1,6 +1,7 @@
 package com.github.awvalenti.corridapatrimonial.servidor.entradasaida.comandos;
 
 import com.github.awvalenti.corridapatrimonial.servidor.entradasaida.criptografia.AlgoritmoCriptografico;
+import com.github.awvalenti.corridapatrimonial.servidor.entradasaida.mensagens.MensagemResultanteExecucaoComando;
 
 public class ProcessadorComandosCifrados {
 

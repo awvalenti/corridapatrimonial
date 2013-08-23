@@ -15,8 +15,8 @@ public class FabricaJogadorPadrao implements FabricaJogador {
 	}
 
 	@Override
-	public Jogador fabricar(String id) {
-		return new Jogador(id, new Patrimonio(), dinheiroInicial);
+	public Jogador fabricar(String id, String codigoCartao) {
+		return new Jogador(id, new Patrimonio(), dinheiroInicial, codigoCartao);
 	}
 
 }

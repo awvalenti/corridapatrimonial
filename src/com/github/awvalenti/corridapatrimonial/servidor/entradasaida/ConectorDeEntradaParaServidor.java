@@ -7,9 +7,10 @@ import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import com.github.awvalenti.corridapatrimonial.servidor.entradasaida.comandos.MensagemResultanteExecucaoComando;
 import com.github.awvalenti.corridapatrimonial.servidor.entradasaida.comandos.ProcessadorComandosCifrados;
 import com.github.awvalenti.corridapatrimonial.servidor.entradasaida.criptografia.GeradorChaves;
+import com.github.awvalenti.corridapatrimonial.servidor.entradasaida.mensagens.MensagemJogadorEntrou;
+import com.github.awvalenti.corridapatrimonial.servidor.entradasaida.mensagens.MensagemResultanteExecucaoComando;
 
 public class ConectorDeEntradaParaServidor {
 
@@ -33,24 +34,23 @@ public class ConectorDeEntradaParaServidor {
 
 			String idCliente = ((InetSocketAddress) socketCliente.getRemoteSocketAddress()).getHostName();
 
-			Integer chave = geradorChaves.buscarChave(idCliente);
+			Integer chaveBuscada = geradorChaves.buscarChave(idCliente);
 
-			if (chave == null) {
-				chave = 0;
+			if (chaveBuscada == null) {
+				chaveBuscada = 0;
 			}
 
-			MensagemResultanteExecucaoComando mensagemResultante = new EntradaParaServidorViaInputStream(chave,
+			MensagemResultanteExecucaoComando mensagemResultante = new EntradaParaServidorViaInputStream(chaveBuscada,
 					socketCliente.getInputStream(), processadorComandosCifrados).lerETratarLinhaComando();
 
-			String mensagemParaCliente = mensagemResultante.name();
-
-			// XXX Feio: if de enum
-			if (mensagemResultante == MensagemResultanteExecucaoComando.JOGADOR_ENTROU) {
-				mensagemParaCliente = "Sua chave e' " + geradorChaves.gerarChave(idCliente);
+			// XXX Feio
+			if (mensagemResultante.indicaQueJogadorEntrou()) {
+				Integer chaveGeradaAgora = geradorChaves.gerarChave(idCliente);
+				((MensagemJogadorEntrou) mensagemResultante).setChaveCriptografica(chaveGeradaAgora);
 			}
 
 			OutputStream outputStream = socketCliente.getOutputStream();
-			new PrintWriter(outputStream, true).println(mensagemParaCliente);
+			new PrintWriter(outputStream, true).println(mensagemResultante.getTexto());
 
 			socketCliente.close();
 		}

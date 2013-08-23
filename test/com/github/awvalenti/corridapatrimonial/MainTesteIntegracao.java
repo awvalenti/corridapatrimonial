@@ -34,13 +34,13 @@ public class MainTesteIntegracao {
 		enviarLinhaComando("entrar andre");
 		enviarLinhaComando("entrar jose");
 
-		Thread.sleep(50);
+		Thread.sleep(40);
 
 		entradaJogo.iniciarJogo();
-		Thread.sleep(1500);
-		enviarLinhaComando("comprar andre 1");
-		enviarLinhaComando("comprar jose 2");
-		enviarLinhaComando("comprar jose 3");
+		Thread.sleep(4000);
+		enviarLinhaComando("comprar andre 1 mario");
+		enviarLinhaComando("comprar jose 2 prince");
+		enviarLinhaComando("comprar jose 3 mario");
 
 	}
 

@@ -5,7 +5,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.github.awvalenti.corridapatrimonial.servidor.entradasaida.comandos.MensagemResultanteExecucaoComando;
+import com.github.awvalenti.corridapatrimonial.servidor.entradasaida.mensagens.MensagemFixa;
+import com.github.awvalenti.corridapatrimonial.servidor.entradasaida.mensagens.MensagemJogadorEntrou;
+import com.github.awvalenti.corridapatrimonial.servidor.entradasaida.mensagens.MensagemResultanteExecucaoComando;
+import com.github.awvalenti.corridapatrimonial.servidor.fabricasconcretas.FabricaCartoes;
 import com.github.awvalenti.corridapatrimonial.servidor.logicajogo.interfaces.FabricaJogador;
 import com.github.awvalenti.corridapatrimonial.servidor.logicajogo.interfaces.FabricaVitrines;
 import com.github.awvalenti.corridapatrimonial.servidor.logicajogo.interfaces.GestorFabricaVitrines;
@@ -26,27 +29,30 @@ public class JogoModel implements InterfaceEntradaJogo, OuvinteVitrine {
 	private Vitrine vitrine = Vitrine.VAZIA;
 	private InterfaceSaidaJogo saidaJogo;
 	private FabricaJogador fabricaJogador;
+	private FabricaCartoes fabricaCartoes;
 	private EstadoJogoModel estado;
 
 	public JogoModel(FabricaVitrines fabricaVitrines, GestorFabricaVitrines gestorFabricaVitrines, FabricaJogador fabricaJogador,
-			InterfaceSaidaJogo saidaJogo) {
+			InterfaceSaidaJogo saidaJogo, FabricaCartoes fabricaCartoes) {
 		estado = EstadoJogoModel.AGUARDANDO_INICIO;
 
 		this.fabricaVitrines = fabricaVitrines;
 		this.gestorFabricaVitrines = gestorFabricaVitrines;
 		this.fabricaJogador = fabricaJogador;
+		this.fabricaCartoes = fabricaCartoes;
 		this.saidaJogo = saidaJogo;
 	}
 
 	@Override
 	public synchronized MensagemResultanteExecucaoComando criarNovoJogador(String idJogador) {
 		if (estado.aceitaCriarJogador() && buscarJogadorPorId(idJogador) == null) {
-			Jogador jogador = fabricaJogador.fabricar(idJogador);
+			String codigoCartao = fabricaCartoes.fabricarCodigoCartao();
+			Jogador jogador = fabricaJogador.fabricar(idJogador, codigoCartao);
 			jogadores.add(jogador);
 			saidaJogo.aoEntrarJogador(jogador);
-			return MensagemResultanteExecucaoComando.JOGADOR_ENTROU;
+			return new MensagemJogadorEntrou(codigoCartao);
 		} else {
-			return MensagemResultanteExecucaoComando.COMANDO_REJEITADO;
+			return MensagemFixa.COMANDO_REJEITADO;
 		}
 	}
 
@@ -61,9 +67,9 @@ public class JogoModel implements InterfaceEntradaJogo, OuvinteVitrine {
 			estado = EstadoJogoModel.RODANDO;
 			saidaJogo.aoIniciarJogo();
 			gestorFabricaVitrines.iniciarExecucao(fabricaVitrines, this);
-			return MensagemResultanteExecucaoComando.OK;
+			return MensagemFixa.OK;
 		} else {
-			return MensagemResultanteExecucaoComando.COMANDO_REJEITADO;
+			return MensagemFixa.COMANDO_REJEITADO;
 		}
 	}
 
@@ -94,18 +100,28 @@ public class JogoModel implements InterfaceEntradaJogo, OuvinteVitrine {
 	}
 
 	@Override
-	public synchronized MensagemResultanteExecucaoComando solicitarCompra(String idJogador, String idOferta) {
+	public synchronized MensagemResultanteExecucaoComando solicitarCompra(String idJogador, String idOferta, String codigoCartao) {
 		if (estado.aceitaSolicitacaoCompra()) {
-			Jogador jogador = buscarJogadorPorId(idJogador);
+			Jogador comprador = buscarJogadorPorId(idJogador);
 			Oferta oferta = buscarOfertaPorId(idOferta);
+			Jogador pagante = buscarJogadorPorCodigoCartao(codigoCartao);
 
-			if (jogador != null && oferta != null) {
-				efetivarCompra(jogador, oferta);
+			if (comprador != null && oferta != null && pagante != null) {
+				efetivarCompra(comprador, pagante, oferta);
+				return MensagemFixa.OK;
 			}
-			return MensagemResultanteExecucaoComando.OK;
-		} else {
-			return MensagemResultanteExecucaoComando.COMANDO_REJEITADO;
 		}
+
+		return MensagemFixa.COMANDO_REJEITADO;
+	}
+
+	private Jogador buscarJogadorPorCodigoCartao(String codigoCartao) {
+		for (Jogador jogador : jogadores) {
+			if (jogador.getCodigoCartao().equals(codigoCartao)) {
+				return jogador;
+			}
+		}
+		return null;
 	}
 
 	private Jogador buscarJogadorPorId(String idJogador) {
@@ -126,10 +142,12 @@ public class JogoModel implements InterfaceEntradaJogo, OuvinteVitrine {
 		return null;
 	}
 
-	private void efetivarCompra(Jogador jogador, Oferta oferta) {
-		jogador.comprar(oferta);
+	private void efetivarCompra(Jogador comprador, Jogador pagante, Oferta oferta) {
+		comprador.patrimoniar(oferta.getProduto());
+		pagante.pagar(oferta.getPreco());
+
 		vitrine.remover(oferta);
-		saidaJogo.aoEfetivarCompra(jogador, oferta);
+		saidaJogo.aoEfetivarCompra(comprador, oferta);
 		verificarSeJogoAcabou();
 	}
 

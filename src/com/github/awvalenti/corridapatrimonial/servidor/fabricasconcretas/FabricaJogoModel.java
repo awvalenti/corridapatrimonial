@@ -28,7 +28,8 @@ public class FabricaJogoModel {
 			EstrategiaGeracaoOfertas.PRODUCAO_DE_OFERTAS_ALEATORIAS,
 			new EstrategiaProducaoPeriodica(duracaoVitrineAberta, duracaoVitrineFechada),
 			new FabricaJogadorPadrao(dinheiroInicial),
-			SaidaJogoNoConsole.INSTANCIA
+			SaidaJogoNoConsole.INSTANCIA,
+			new FabricaCartoes()
 		);
 	}
 

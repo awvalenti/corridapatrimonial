@@ -7,20 +7,25 @@ public class Jogador {
 	private String id;
 	private Patrimonio patrimonio;
 	private BigDecimal dinheiro;
+	private String codigoCartao;
 
-	public Jogador(String id, Patrimonio patrimonio, BigDecimal dinheiro) {
+	public Jogador(String id, Patrimonio patrimonio, BigDecimal dinheiro, String codigoCartao) {
 		this.id = id;
 		this.patrimonio = patrimonio;
 		this.dinheiro = dinheiro;
+		this.codigoCartao = codigoCartao;
 	}
 
 	public String getId() {
 		return id;
 	}
 
-	public void comprar(Oferta oferta) {
-		patrimonio.acrescentar(oferta.getProduto());
-		dinheiro = dinheiro.subtract(oferta.getPreco());
+	public void patrimoniar(Produto produto) {
+		patrimonio.acrescentar(produto);
+	}
+
+	public void pagar(BigDecimal valor) {
+		dinheiro = dinheiro.subtract(valor);
 	}
 
 	public boolean cumpriuObjetivo() {
@@ -30,6 +35,10 @@ public class Jogador {
 	@Override
 	public String toString() {
 		return id;
+	}
+
+	public String getCodigoCartao() {
+		return codigoCartao;
 	}
 
 }
