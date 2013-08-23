@@ -3,24 +3,23 @@ package com.github.awvalenti.corridapatrimonial.servidor.entradasaida.comandos;
 import com.github.awvalenti.corridapatrimonial.servidor.logicajogo.interfaces.InterfaceEntradaJogo;
 
 enum Comando {
-	ENTRAR {
+	ENTRAR(2) {
 		@Override
-		public MensagemResultanteExecucaoComando executar(InterfaceEntradaJogo entradaJogo, String[] args) {
+		MensagemResultanteExecucaoComando executarEfetivamente(InterfaceEntradaJogo entradaJogo, String[] args) {
 			return entradaJogo.criarNovoJogador(args[1]);
 		}
 	},
 
-	COMPRAR {
+	COMPRAR(3) {
 		@Override
-		public MensagemResultanteExecucaoComando executar(InterfaceEntradaJogo entradaJogo, String[] args) {
-			entradaJogo.solicitarCompra(args[1], args[2]);
-			return MensagemResultanteExecucaoComando.NENHUMA_MENSAGEM;
+		MensagemResultanteExecucaoComando executarEfetivamente(InterfaceEntradaJogo entradaJogo, String[] args) {
+			return entradaJogo.solicitarCompra(args[1], args[2]);
 		}
 	},
 
-	COMANDO_NAO_RECONHECIDO {
+	COMANDO_NAO_RECONHECIDO(0) {
 		@Override
-		public MensagemResultanteExecucaoComando executar(InterfaceEntradaJogo entradaJogo, String[] args) {
+		MensagemResultanteExecucaoComando executarEfetivamente(InterfaceEntradaJogo entradaJogo, String[] args) {
 			// XXX Feio
 			System.err.println("Comando nao reconhecido: " + args[0]);
 
@@ -29,11 +28,22 @@ enum Comando {
 	},
 	;
 
+	private final int numeroCorretoArgumentos;
+
+	Comando(int numeroCorretoArgumentos) {
+		this.numeroCorretoArgumentos = numeroCorretoArgumentos;
+	}
+
 	public static Comando fromString(String nomeComando) {
 		return buscarComandoComNome(nomeComando.toUpperCase().replace('-', '_'));
 	}
 
-	public abstract MensagemResultanteExecucaoComando executar(InterfaceEntradaJogo entradaJogo, String[] args);
+	public MensagemResultanteExecucaoComando executar(InterfaceEntradaJogo entradaJogo, String[] args) {
+		return args.length == numeroCorretoArgumentos ? executarEfetivamente(entradaJogo, args) :
+				MensagemResultanteExecucaoComando.COMANDO_REJEITADO;
+	}
+
+	abstract MensagemResultanteExecucaoComando executarEfetivamente(InterfaceEntradaJogo entradaJogo, String[] args);
 
 	@Override
 	public String toString() {
