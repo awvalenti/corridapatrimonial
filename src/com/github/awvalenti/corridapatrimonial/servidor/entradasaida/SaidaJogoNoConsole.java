@@ -4,6 +4,7 @@ import com.github.awvalenti.corridapatrimonial.servidor.logicajogo.interfaces.In
 import com.github.awvalenti.corridapatrimonial.servidor.logicajogo.modelodedados.Jogador;
 import com.github.awvalenti.corridapatrimonial.servidor.logicajogo.modelodedados.Oferta;
 import com.github.awvalenti.corridapatrimonial.servidor.logicajogo.modelodedados.Vitrine;
+import com.github.awvalenti.corridapatrimonial.servidor.logicajogo.mvc.SituacaoAtualJogo;
 
 public enum SaidaJogoNoConsole implements InterfaceSaidaJogo {
 	INSTANCIA {
@@ -23,8 +24,8 @@ public enum SaidaJogoNoConsole implements InterfaceSaidaJogo {
 		}
 
 		@Override
-		public void aoFecharVitrine() {
-			System.out.println("Vitrine fechada");
+		public void aoFecharVitrine(SituacaoAtualJogo situacao) {
+			System.out.println("Vitrine fechada. Situacao atual do jogo:\n" + situacao);
 		}
 
 		@Override

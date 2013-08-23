@@ -96,7 +96,7 @@ public class JogoModel implements InterfaceEntradaJogo, OuvinteVitrine {
 	@Override
 	public synchronized void aoFecharVitrine() {
 		this.vitrine = Vitrine.VAZIA;
-		saidaJogo.aoFecharVitrine();
+		saidaJogo.aoFecharVitrine(new SituacaoAtualJogo(jogadores));
 	}
 
 	@Override

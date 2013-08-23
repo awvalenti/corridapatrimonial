@@ -2,6 +2,8 @@ package com.github.awvalenti.corridapatrimonial.servidor.logicajogo.modelodedado
 
 import java.math.BigDecimal;
 
+import com.github.awvalenti.corridapatrimonial.util.FormatadorDinheiro;
+
 public class Jogador {
 
 	private String id;
@@ -39,6 +41,14 @@ public class Jogador {
 
 	public String getCodigoCartao() {
 		return codigoCartao;
+	}
+
+	public String getDinheiroFormatado() {
+		return FormatadorDinheiro.formatar(dinheiro);
+	}
+
+	public Patrimonio getPatrimonio() {
+		return patrimonio;
 	}
 
 }
