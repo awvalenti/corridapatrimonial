@@ -12,9 +12,7 @@ public class SaidaParaServidorViaOutputStream {
 	}
 
 	public void enviarLinhaComando(String linhaComando) {
-		PrintWriter printWriter = new PrintWriter(outputStream);
-		printWriter.write(linhaComando);
-		printWriter.flush();
+		new PrintWriter(outputStream, true).println(linhaComando);
 	}
 
 }

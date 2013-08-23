@@ -1,10 +1,12 @@
 package com.github.awvalenti.corridapatrimonial.servidor.entradasaida;
 
 import java.io.IOException;
-import java.net.InetSocketAddress;
+import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import com.github.awvalenti.corridapatrimonial.servidor.entradasaida.comandos.MensagemResultanteExecucaoComando;
 import com.github.awvalenti.corridapatrimonial.servidor.entradasaida.comandos.ProcessadorComandosCifrados;
 import com.github.awvalenti.corridapatrimonial.servidor.entradasaida.criptografia.GeradorChaves;
 
@@ -28,10 +30,23 @@ public class ConectorDeEntradaParaServidor {
 		for (;;) {
 			Socket socketCliente = serverSocket.accept();
 
-			String idCliente = ((InetSocketAddress) socketCliente.getRemoteSocketAddress()).getAddress().getHostAddress();
+			String idCliente = socketCliente.getRemoteSocketAddress().toString();
 
-			new EntradaParaServidorViaInputStream(geradorChaves.buscarOuGerarChave(idCliente), socketCliente.getInputStream(),
-					processadorComandosCifrados).lerETratarLinhaComando();
+			int chaveCliente = geradorChaves.buscarOuGerarChave(idCliente);
+
+			MensagemResultanteExecucaoComando mensagemResultante = new EntradaParaServidorViaInputStream(chaveCliente,
+					socketCliente.getInputStream(), processadorComandosCifrados).lerETratarLinhaComando();
+
+			// XXX Feio: if de enum
+			String mensagemParaCliente = "OK";
+			if (mensagemResultante == MensagemResultanteExecucaoComando.JOGADOR_ENTROU) {
+				mensagemParaCliente = "Sua chave e': " + chaveCliente;
+			}
+
+			OutputStream outputStream = socketCliente.getOutputStream();
+			new PrintWriter(outputStream, true).println(mensagemParaCliente);
+
+			socketCliente.close();
 		}
 	}
 

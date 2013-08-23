@@ -5,15 +5,27 @@ import com.github.awvalenti.corridapatrimonial.servidor.logicajogo.interfaces.In
 enum Comando {
 	ENTRAR {
 		@Override
-		public void executar(InterfaceEntradaJogo entradaJogo, String[] args) {
-			entradaJogo.criarNovoJogador(args[0]);
+		public MensagemResultanteExecucaoComando executar(InterfaceEntradaJogo entradaJogo, String[] args) {
+			entradaJogo.criarNovoJogador(args[1]);
+			return MensagemResultanteExecucaoComando.JOGADOR_ENTROU;
 		}
 	},
 
 	COMPRAR {
 		@Override
-		public void executar(InterfaceEntradaJogo entradaJogo, String[] args) {
-			entradaJogo.solicitarCompra(args[0], args[1]);
+		public MensagemResultanteExecucaoComando executar(InterfaceEntradaJogo entradaJogo, String[] args) {
+			entradaJogo.solicitarCompra(args[1], args[2]);
+			return MensagemResultanteExecucaoComando.NENHUMA_MENSAGEM;
+		}
+	},
+
+	COMANDO_NAO_RECONHECIDO {
+		@Override
+		public MensagemResultanteExecucaoComando executar(InterfaceEntradaJogo entradaJogo, String[] args) {
+			// XXX Feio
+			System.err.println("Comando nao reconhecido: " + args[0]);
+
+			return MensagemResultanteExecucaoComando.COMANDO_NAO_RECONHECIDO;
 		}
 	},
 	;
@@ -22,7 +34,7 @@ enum Comando {
 		return buscarComandoComNome(nomeComando.toUpperCase().replace('-', '_'));
 	}
 
-	public abstract void executar(InterfaceEntradaJogo entradaJogo, String[] args);
+	public abstract MensagemResultanteExecucaoComando executar(InterfaceEntradaJogo entradaJogo, String[] args);
 
 	@Override
 	public String toString() {
@@ -30,13 +42,14 @@ enum Comando {
 	}
 
 	private static Comando buscarComandoComNome(String nomeComando) {
+		// TODO Em vez de values(), algo que exclua COMANDO_NAO_RECONHECIDO
 		for (Comando comando : values()) {
 			if (comando.name().equals(nomeComando)) {
 				return comando;
 			}
 		}
 
-		return null;
+		return COMANDO_NAO_RECONHECIDO;
 	}
 
 }

@@ -1,7 +1,5 @@
 package com.github.awvalenti.corridapatrimonial.servidor.entradasaida.comandos;
 
-import java.util.Arrays;
-
 import com.github.awvalenti.corridapatrimonial.servidor.logicajogo.interfaces.InterfaceEntradaJogo;
 
 public class ExecutorComandos {
@@ -12,17 +10,11 @@ public class ExecutorComandos {
 		this.entradaJogo = entradaJogo;
 	}
 
-	public void executarLinhaComando(String linhaComando) {
-		String[] palavras = linhaComando.split(" ");
-		String nomeComando = palavras[0];
-		String[] args = Arrays.copyOfRange(palavras, 1, palavras.length);
+	public MensagemResultanteExecucaoComando executarLinhaComando(String linhaComando) {
+		String[] args = linhaComando.split(" ");
+		String nomeComando = args[0];
 
-		Comando comando = Comando.fromString(nomeComando);
-		if (comando != null) {
-			comando.executar(entradaJogo, args);
-		} else {
-			System.err.println("Comando nao reconhecido: " + nomeComando);
-		}
+		return Comando.fromString(nomeComando).executar(entradaJogo, args);
 	}
 
 }

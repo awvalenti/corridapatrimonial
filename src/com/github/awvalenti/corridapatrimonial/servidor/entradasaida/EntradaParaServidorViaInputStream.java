@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import com.github.awvalenti.corridapatrimonial.servidor.entradasaida.comandos.MensagemResultanteExecucaoComando;
 import com.github.awvalenti.corridapatrimonial.servidor.entradasaida.comandos.ProcessadorComandosCifrados;
 
 public class EntradaParaServidorViaInputStream {
@@ -19,8 +20,8 @@ public class EntradaParaServidorViaInputStream {
 		this.processadorComandosCifrados = processadorComandosCifrados;
 	}
 
-	public void lerETratarLinhaComando() throws IOException {
-		processadorComandosCifrados.processarLinhaComandoCifrada(new BufferedReader(new InputStreamReader(inputStream)).readLine(), chave);
+	public MensagemResultanteExecucaoComando lerETratarLinhaComando() throws IOException {
+		return processadorComandosCifrados.processarLinhaComandoCifrada(new BufferedReader(new InputStreamReader(inputStream)).readLine(), chave);
 	}
 
 }

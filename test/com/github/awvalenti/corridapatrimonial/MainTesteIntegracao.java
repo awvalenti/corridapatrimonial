@@ -46,7 +46,9 @@ public class MainTesteIntegracao {
 	}
 
 	private static void enviarLinhaComando(String linhaComando) throws IOException {
-		new ConectorDeSaidaDoCliente("localhost", 8080).enviarLinhaComando(linhaComando);
+//		linhaComando = AlgoritmoCriptografico.CIFRA_DE_CESAR_ESTENDIDA.cifrar(linhaComando, 3);
+
+		new ConectorDeSaidaDoCliente("localhost", 8080, System.out).enviarLinhaComando(linhaComando);
 	}
 
 }

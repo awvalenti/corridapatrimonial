@@ -12,8 +12,8 @@ public class ProcessadorComandosCifrados {
 		this.executorComandos = executorComandos;
 	}
 
-	public void processarLinhaComandoCifrada(String linhaComandoCifrada, int chave) {
-		executorComandos.executarLinhaComando(algoritmoCriptografico.decifrar(linhaComandoCifrada, chave));
+	public MensagemResultanteExecucaoComando processarLinhaComandoCifrada(String linhaComandoCifrada, int chave) {
+		return executorComandos.executarLinhaComando(algoritmoCriptografico.decifrar(linhaComandoCifrada, chave));
 	}
 
 }
