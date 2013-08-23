@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.github.awvalenti.corridapatrimonial.servidor.logicajogo.interfaces.FabricaJogador;
 import com.github.awvalenti.corridapatrimonial.servidor.logicajogo.interfaces.FabricaVitrines;
 import com.github.awvalenti.corridapatrimonial.servidor.logicajogo.interfaces.GestorFabricaVitrines;
 import com.github.awvalenti.corridapatrimonial.servidor.logicajogo.interfaces.InterfaceEntradaJogo;
@@ -23,24 +24,19 @@ public class JogoModel implements InterfaceEntradaJogo, OuvinteVitrine {
 	private Set<OuvinteOfertas> ouvintesOfertas = new HashSet<OuvinteOfertas>();
 	private Vitrine vitrine;
 	private InterfaceSaidaJogo saidaJogo;
+	private FabricaJogador fabricaJogador;
 
-	public JogoModel(FabricaVitrines fabricaVitrines, GestorFabricaVitrines gestorFabricaVitrines, InterfaceSaidaJogo saidaJogo) {
+	public JogoModel(FabricaVitrines fabricaVitrines, GestorFabricaVitrines gestorFabricaVitrines, FabricaJogador fabricaJogador,
+			InterfaceSaidaJogo saidaJogo) {
 		this.fabricaVitrines = fabricaVitrines;
 		this.gestorFabricaVitrines = gestorFabricaVitrines;
+		this.fabricaJogador = fabricaJogador;
 		this.saidaJogo = saidaJogo;
 	}
 
 	@Override
-	public void adicionarJogador(Jogador jogador) {
-		jogadores.add(jogador);
-	}
-
-	@Override
-	@SuppressWarnings("hiding")
-	public void adicionarJogadores(Jogador... jogadores) {
-		for (Jogador jogador : jogadores) {
-			adicionarJogador(jogador);
-		}
+	public synchronized void criarNovoJogador(String idJogador) {
+		jogadores.add(fabricaJogador.fabricar(idJogador));
 	}
 
 	@Override
