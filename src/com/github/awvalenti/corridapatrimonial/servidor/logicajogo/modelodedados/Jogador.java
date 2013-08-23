@@ -30,8 +30,8 @@ public class Jogador {
 		dinheiro = dinheiro.subtract(valor);
 	}
 
-	public boolean cumpriuObjetivo() {
-		return dinheiro.compareTo(BigDecimal.ZERO) > 0 && patrimonio.estahCompleto();
+	public boolean patrimonioEstahCompleto() {
+		return patrimonio.estahCompleto();
 	}
 
 	@Override
@@ -49,6 +49,10 @@ public class Jogador {
 
 	public Patrimonio getPatrimonio() {
 		return patrimonio;
+	}
+
+	public BigDecimal getDinheiro() {
+		return dinheiro;
 	}
 
 }

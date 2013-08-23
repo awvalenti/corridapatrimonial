@@ -1,6 +1,8 @@
 package com.github.awvalenti.corridapatrimonial.servidor.logicajogo.mvc;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -31,9 +33,10 @@ public class JogoModel implements InterfaceEntradaJogo, OuvinteVitrine {
 	private FabricaJogador fabricaJogador;
 	private FabricaCartoes fabricaCartoes;
 	private EstadoJogoModel estado;
+	private int quantidadeMaximaDePatrimoniosCompletos;
 
 	public JogoModel(FabricaVitrines fabricaVitrines, GestorFabricaVitrines gestorFabricaVitrines, FabricaJogador fabricaJogador,
-			InterfaceSaidaJogo saidaJogo, FabricaCartoes fabricaCartoes) {
+			InterfaceSaidaJogo saidaJogo, FabricaCartoes fabricaCartoes, int quantidadeMaximaDePatrimoniosCompletos) {
 		estado = EstadoJogoModel.AGUARDANDO_INICIO;
 
 		this.fabricaVitrines = fabricaVitrines;
@@ -41,6 +44,7 @@ public class JogoModel implements InterfaceEntradaJogo, OuvinteVitrine {
 		this.fabricaJogador = fabricaJogador;
 		this.fabricaCartoes = fabricaCartoes;
 		this.saidaJogo = saidaJogo;
+		this.quantidadeMaximaDePatrimoniosCompletos = quantidadeMaximaDePatrimoniosCompletos;
 	}
 
 	@Override
@@ -152,21 +156,40 @@ public class JogoModel implements InterfaceEntradaJogo, OuvinteVitrine {
 	}
 
 	private void verificarSeJogoAcabou() {
-		Jogador vencedor = buscarVencedor();
-
-		if (vencedor != null) {
-			finalizarJogo(vencedor);
+		if (contarQuantidadeDePatrimoniosCompletos() >= quantidadeMaximaDePatrimoniosCompletos) {
+			finalizarJogo(buscarJogadorComMaisDinheiroEPatrimonioCompleto());
 		}
 	}
 
-	private Jogador buscarVencedor() {
-		for (Jogador jogador : jogadores) {
-			if (jogador.cumpriuObjetivo()) {
+	private Jogador buscarJogadorComMaisDinheiroEPatrimonioCompleto() {
+		List<Jogador> jogadoresPorOrdemDecrescenteDeDinheiro = new ArrayList<Jogador>(jogadores);
+
+		Collections.sort(jogadoresPorOrdemDecrescenteDeDinheiro, new Comparator<Jogador>() {
+			@Override
+			public int compare(Jogador o1, Jogador o2) {
+				return o2.getDinheiro().compareTo(o1.getDinheiro());
+			}
+		});
+
+		for (Jogador jogador : jogadoresPorOrdemDecrescenteDeDinheiro) {
+			if (jogador.patrimonioEstahCompleto()) {
 				return jogador;
 			}
 		}
 
-		return null;
+		throw new IllegalStateException("Nao deve chegar aqui");
+	}
+
+	private int contarQuantidadeDePatrimoniosCompletos() {
+		int cont = 0;
+
+		for (Jogador jogador : jogadores) {
+			if (jogador.patrimonioEstahCompleto()) {
+				++cont;
+			}
+		}
+
+		return cont;
 	}
 
 }

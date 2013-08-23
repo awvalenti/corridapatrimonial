@@ -17,19 +17,21 @@ public class FabricaJogoModel {
 		return fabricarJogoModel(
 			new BigDecimal(config.getProperty("dinheiroInicial")),
 			Long.parseLong(config.getProperty("duracaoVitrineAberta")),
-			Long.parseLong(config.getProperty("duracaoVitrineFechada"))
+			Long.parseLong(config.getProperty("duracaoVitrineFechada")),
+			config.getIntProperty("quantidadeMaximaDePatrimoniosCompletos")
 		);
 	}
 
 	private static InterfaceEntradaJogo fabricarJogoModel(BigDecimal dinheiroInicial, long duracaoVitrineAberta,
-			long duracaoVitrineFechada) {
+			long duracaoVitrineFechada, int quantidadeMaximaDePatrimoniosCompletos) {
 
 		return new JogoModel(
 			EstrategiaGeracaoOfertas.PRODUCAO_DE_OFERTAS_ALEATORIAS,
 			new EstrategiaProducaoPeriodica(duracaoVitrineAberta, duracaoVitrineFechada),
 			new FabricaJogadorPadrao(dinheiroInicial),
 			SaidaJogoNoConsole.INSTANCIA,
-			new FabricaCartoes()
+			new FabricaCartoes(),
+			quantidadeMaximaDePatrimoniosCompletos
 		);
 	}
 
