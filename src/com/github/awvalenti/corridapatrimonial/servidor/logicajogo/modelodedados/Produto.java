@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 public enum Produto {
 	MAQUINA_DE_CAFE(100),
 	PO_DE_CAFE(10),
-	CADEIRAS(500),
+	SEIS_CADEIRAS(500),
 	MESA(900),
 	COMPUTADOR_PESSOAL(1500),
 	FOGAO(1000),

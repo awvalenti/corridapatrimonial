@@ -23,7 +23,7 @@ public class JogoModel implements InterfaceEntradaJogo, OuvinteVitrine {
 	private FabricaVitrines fabricaVitrines;
 	private GestorFabricaVitrines gestorFabricaVitrines;
 	private Set<OuvinteOfertas> ouvintesOfertas = new HashSet<OuvinteOfertas>();
-	private Vitrine vitrine;
+	private Vitrine vitrine = Vitrine.VAZIA;
 	private InterfaceSaidaJogo saidaJogo;
 	private FabricaJogador fabricaJogador;
 	private EstadoJogoModel estado;

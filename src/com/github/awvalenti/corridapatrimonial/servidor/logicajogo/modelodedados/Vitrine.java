@@ -23,7 +23,15 @@ public class Vitrine {
 
 	@Override
 	public String toString() {
-		return ofertas.toString();
+		StringBuilder sb = new StringBuilder("{\n");
+
+		for (Oferta oferta : ofertas) {
+			sb.append('\t').append(oferta).append('\n');
+		}
+
+
+
+		return sb.append('}').toString();
 	}
 
 }
