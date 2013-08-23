@@ -1,5 +1,7 @@
 package com.github.awvalenti.corridapatrimonial.servidor.entradasaida.comandos;
 
+import java.util.Arrays;
+
 import com.github.awvalenti.corridapatrimonial.servidor.logicajogo.interfaces.InterfaceEntradaJogo;
 
 enum Comando {
@@ -39,8 +41,14 @@ enum Comando {
 	}
 
 	public MensagemResultanteExecucaoComando executar(InterfaceEntradaJogo entradaJogo, String[] args) {
-		return args.length == numeroCorretoArgumentos ? executarEfetivamente(entradaJogo, args) :
-				MensagemResultanteExecucaoComando.COMANDO_REJEITADO;
+		if (args.length == numeroCorretoArgumentos) {
+			return executarEfetivamente(entradaJogo, args);
+		} else {
+			// XXX Feio
+			System.err.println("COMANDO_REJEITADO: " + Arrays.toString(args));
+
+			return MensagemResultanteExecucaoComando.COMANDO_REJEITADO;
+		}
 	}
 
 	abstract MensagemResultanteExecucaoComando executarEfetivamente(InterfaceEntradaJogo entradaJogo, String[] args);

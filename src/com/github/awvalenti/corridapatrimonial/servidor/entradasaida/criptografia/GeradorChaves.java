@@ -12,14 +12,11 @@ public class GeradorChaves {
 	private Map<String, Integer> chavesPorIdCliente = new HashMap<String, Integer>();
 
 
-	public synchronized int buscarOuGerarChave(String idCliente) {
-		Integer chave = chavesPorIdCliente.get(idCliente);
-
-		return chave != null ? chave : gerarNovaChave(idCliente);
+	public synchronized Integer buscarChave(String idCliente) {
+		return chavesPorIdCliente.get(idCliente);
 	}
 
-
-	private Integer gerarNovaChave(String idCliente) {
+	public synchronized Integer gerarChave(String idCliente) {
 		int chaveGerada = CHAVES_POSSIVEIS[indiceUltimaChaveGerada++ % CHAVES_POSSIVEIS.length];
 
 		chavesPorIdCliente.put(idCliente, chaveGerada);

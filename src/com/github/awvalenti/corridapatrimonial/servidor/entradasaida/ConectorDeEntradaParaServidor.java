@@ -3,6 +3,7 @@ package com.github.awvalenti.corridapatrimonial.servidor.entradasaida;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -30,18 +31,22 @@ public class ConectorDeEntradaParaServidor {
 		for (;;) {
 			Socket socketCliente = serverSocket.accept();
 
-			String idCliente = socketCliente.getRemoteSocketAddress().toString();
+			String idCliente = ((InetSocketAddress) socketCliente.getRemoteSocketAddress()).getHostName();
 
-			int chaveCliente = geradorChaves.buscarOuGerarChave(idCliente);
+			Integer chave = geradorChaves.buscarChave(idCliente);
 
-			MensagemResultanteExecucaoComando mensagemResultante = new EntradaParaServidorViaInputStream(chaveCliente,
+			if (chave == null) {
+				chave = 0;
+			}
+
+			MensagemResultanteExecucaoComando mensagemResultante = new EntradaParaServidorViaInputStream(chave,
 					socketCliente.getInputStream(), processadorComandosCifrados).lerETratarLinhaComando();
 
 			String mensagemParaCliente = mensagemResultante.name();
 
 			// XXX Feio: if de enum
 			if (mensagemResultante == MensagemResultanteExecucaoComando.JOGADOR_ENTROU) {
-				mensagemParaCliente = "Sua chave e' " + chaveCliente;
+				mensagemParaCliente = "Sua chave e' " + geradorChaves.gerarChave(idCliente);
 			}
 
 			OutputStream outputStream = socketCliente.getOutputStream();
