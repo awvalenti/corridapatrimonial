@@ -1,3 +1,4 @@
+package com.github.awvalenti.corridapatrimonial.cliente.main;
 import java.io.IOException;
 
 import com.github.awvalenti.corridapatrimonial.cliente.Cliente;
