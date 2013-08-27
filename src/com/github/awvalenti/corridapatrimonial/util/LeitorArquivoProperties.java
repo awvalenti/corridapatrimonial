@@ -16,6 +16,7 @@ public class LeitorArquivoProperties {
 				throw new IllegalArgumentException("Recurso nao encontrado em " + caminhoNoClasspath);
 			}
 			config.load(resourceAsStream);
+			resourceAsStream.close();
 			return config;
 		} catch (IOException e) {
 			throw new RuntimeException(e);

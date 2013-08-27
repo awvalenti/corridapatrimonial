@@ -10,9 +10,8 @@ import java.util.Set;
 import com.github.awvalenti.corridapatrimonial.servidor.entradasaida.mensagens.MensagemFixa;
 import com.github.awvalenti.corridapatrimonial.servidor.entradasaida.mensagens.MensagemJogadorEntrou;
 import com.github.awvalenti.corridapatrimonial.servidor.entradasaida.mensagens.MensagemResultanteExecucaoComando;
-import com.github.awvalenti.corridapatrimonial.servidor.fabricasconcretas.FabricaCartoes;
+import com.github.awvalenti.corridapatrimonial.servidor.fabricasconcretas.GeradorCartoes;
 import com.github.awvalenti.corridapatrimonial.servidor.logicajogo.interfaces.FabricaJogador;
-import com.github.awvalenti.corridapatrimonial.servidor.logicajogo.interfaces.FabricaVitrines;
 import com.github.awvalenti.corridapatrimonial.servidor.logicajogo.interfaces.GestorFabricaVitrines;
 import com.github.awvalenti.corridapatrimonial.servidor.logicajogo.interfaces.InterfaceEntradaJogo;
 import com.github.awvalenti.corridapatrimonial.servidor.logicajogo.interfaces.InterfaceSaidaJogo;
@@ -25,21 +24,17 @@ import com.github.awvalenti.corridapatrimonial.servidor.logicajogo.modelodedados
 public class JogoModel implements InterfaceEntradaJogo, OuvinteVitrine {
 
 	private List<Jogador> jogadores = new ArrayList<Jogador>();
-	private FabricaVitrines fabricaVitrines;
 	private GestorFabricaVitrines gestorFabricaVitrines;
 	private Set<OuvinteOfertas> ouvintesOfertas = new HashSet<OuvinteOfertas>();
 	private Vitrine vitrine = Vitrine.VAZIA;
 	private InterfaceSaidaJogo saidaJogo;
 	private FabricaJogador fabricaJogador;
-	private FabricaCartoes fabricaCartoes;
-	private EstadoJogoModel estado;
+	private GeradorCartoes fabricaCartoes;
+	private EstadoJogoModel estado = EstadoJogoModel.AGUARDANDO_INICIO;
 	private int quantidadeMaximaDePatrimoniosCompletos;
 
-	public JogoModel(FabricaVitrines fabricaVitrines, GestorFabricaVitrines gestorFabricaVitrines, FabricaJogador fabricaJogador,
-			InterfaceSaidaJogo saidaJogo, FabricaCartoes fabricaCartoes, int quantidadeMaximaDePatrimoniosCompletos) {
-		estado = EstadoJogoModel.AGUARDANDO_INICIO;
-
-		this.fabricaVitrines = fabricaVitrines;
+	public JogoModel(GestorFabricaVitrines gestorFabricaVitrines, FabricaJogador fabricaJogador, InterfaceSaidaJogo saidaJogo,
+			GeradorCartoes fabricaCartoes, int quantidadeMaximaDePatrimoniosCompletos) {
 		this.gestorFabricaVitrines = gestorFabricaVitrines;
 		this.fabricaJogador = fabricaJogador;
 		this.fabricaCartoes = fabricaCartoes;
@@ -50,7 +45,7 @@ public class JogoModel implements InterfaceEntradaJogo, OuvinteVitrine {
 	@Override
 	public synchronized MensagemResultanteExecucaoComando criarNovoJogador(String idJogador) {
 		if (estado.aceitaCriarJogador() && buscarJogadorPorId(idJogador) == null) {
-			String codigoCartao = fabricaCartoes.fabricarCodigoCartao();
+			String codigoCartao = fabricaCartoes.gerarCodigoCartao();
 			Jogador jogador = fabricaJogador.fabricar(idJogador, codigoCartao);
 			jogadores.add(jogador);
 			saidaJogo.aoEntrarJogador(jogador);
@@ -70,7 +65,7 @@ public class JogoModel implements InterfaceEntradaJogo, OuvinteVitrine {
 		if (estado.aceitaIniciarJogo()) {
 			estado = EstadoJogoModel.RODANDO;
 			saidaJogo.aoIniciarJogo();
-			gestorFabricaVitrines.iniciarExecucao(fabricaVitrines, this);
+			gestorFabricaVitrines.iniciarExecucao();
 			return MensagemFixa.OK;
 		} else {
 			return MensagemFixa.COMANDO_REJEITADO;

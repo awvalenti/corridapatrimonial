@@ -2,9 +2,10 @@ package com.github.awvalenti.corridapatrimonial.servidor.fabricasconcretas;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
-public class FabricaCartoes {
+public class GeradorCartoesPorSorteio implements GeradorCartoes {
 
 	private static final String[] CODIGOS = {
 		"mario",
@@ -35,12 +36,13 @@ public class FabricaCartoes {
 	private List<String> codigosEmOrdemAleatoria;
 	private int indiceAtual = 0;
 
-	public FabricaCartoes() {
+	public GeradorCartoesPorSorteio() {
 		codigosEmOrdemAleatoria = new ArrayList<String>(Arrays.asList(CODIGOS));
-//		Collections.shuffle(codigosEmOrdemAleatoria);
+		Collections.shuffle(codigosEmOrdemAleatoria);
 	}
 
-	public synchronized String fabricarCodigoCartao() {
+	@Override
+	public synchronized String gerarCodigoCartao() {
 		return codigosEmOrdemAleatoria.get(indiceAtual++ % codigosEmOrdemAleatoria.size());
 	}
 

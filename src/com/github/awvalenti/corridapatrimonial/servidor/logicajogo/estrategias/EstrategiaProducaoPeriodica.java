@@ -15,18 +15,25 @@ public class EstrategiaProducaoPeriodica implements GestorFabricaVitrines {
 	private FabricaVitrines fabricaVitrines;
 	private OuvinteVitrine ouvinteVitrine;
 
-	public EstrategiaProducaoPeriodica(long duracaoAberta, long duracaoFechada) {
+	public EstrategiaProducaoPeriodica(FabricaVitrines fabricaVitrines, long duracaoAberta, long duracaoFechada) {
+		this.fabricaVitrines = fabricaVitrines;
 		this.duracaoAberta = duracaoAberta;
 		this.duracaoFechada = duracaoFechada;
 	}
 
 	@Override
-	@SuppressWarnings("hiding")
-	public void iniciarExecucao(final FabricaVitrines fabricaVitrines, final OuvinteVitrine ouvinteVitrine) {
-		this.fabricaVitrines = fabricaVitrines;
+	public void setOuvinteVitrine(OuvinteVitrine ouvinteVitrine) {
 		this.ouvinteVitrine = ouvinteVitrine;
+	}
 
+	@Override
+	public void iniciarExecucao() {
 		agendarAbertura();
+	}
+
+	@Override
+	public synchronized void finalizarExecucao() {
+		continuarExecutando = false;
 	}
 
 	private void agendarAbertura() {
@@ -59,11 +66,6 @@ public class EstrategiaProducaoPeriodica implements GestorFabricaVitrines {
 		}
 
 		return continuarExecutando;
-	}
-
-	@Override
-	public synchronized void finalizarExecucao() {
-		continuarExecutando = false;
 	}
 
 }

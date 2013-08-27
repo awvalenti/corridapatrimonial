@@ -6,6 +6,7 @@ import com.github.awvalenti.corridapatrimonial.servidor.config.ConfigServidor;
 import com.github.awvalenti.corridapatrimonial.servidor.entradasaida.SaidaJogoNoConsole;
 import com.github.awvalenti.corridapatrimonial.servidor.logicajogo.estrategias.EstrategiaGeracaoOfertas;
 import com.github.awvalenti.corridapatrimonial.servidor.logicajogo.estrategias.EstrategiaProducaoPeriodica;
+import com.github.awvalenti.corridapatrimonial.servidor.logicajogo.interfaces.GestorFabricaVitrines;
 import com.github.awvalenti.corridapatrimonial.servidor.logicajogo.interfaces.InterfaceEntradaJogo;
 import com.github.awvalenti.corridapatrimonial.servidor.logicajogo.mvc.JogoModel;
 
@@ -25,14 +26,20 @@ public class FabricaJogoModel {
 	private static InterfaceEntradaJogo fabricarJogoModel(BigDecimal dinheiroInicial, long duracaoVitrineAberta,
 			long duracaoVitrineFechada, int quantidadeMaximaDePatrimoniosCompletos) {
 
-		return new JogoModel(
-			EstrategiaGeracaoOfertas.PRODUCAO_DE_OFERTAS_ALEATORIAS,
-			new EstrategiaProducaoPeriodica(duracaoVitrineAberta, duracaoVitrineFechada),
+		GestorFabricaVitrines gestorFabricaVitrines = new EstrategiaProducaoPeriodica(
+				EstrategiaGeracaoOfertas.PRODUCAO_DE_OFERTAS_ALEATORIAS, duracaoVitrineAberta, duracaoVitrineFechada);
+
+		JogoModel jogoModel = new JogoModel(
+			gestorFabricaVitrines,
 			new FabricaJogadorPadrao(dinheiroInicial),
 			SaidaJogoNoConsole.INSTANCIA,
-			new FabricaCartoes(),
+			new GeradorCartoesPorSorteio(),
 			quantidadeMaximaDePatrimoniosCompletos
 		);
+
+		gestorFabricaVitrines.setOuvinteVitrine(jogoModel);
+
+		return jogoModel;
 	}
 
 }
