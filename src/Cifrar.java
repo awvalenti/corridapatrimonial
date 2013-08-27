@@ -12,7 +12,7 @@ public class Cifrar {
 
 		String textoClaro = new BufferedReader(new InputStreamReader(System.in)).readLine();
 
-		System.out.print(AlgoritmoCriptografico.CIFRA_DE_CESAR_ESTENDIDA.cifrar(textoClaro, chave));
+		System.out.println(AlgoritmoCriptografico.CIFRA_DE_CESAR_ESTENDIDA.cifrar(textoClaro, chave));
 	}
 
 }
