@@ -16,7 +16,8 @@ public class EntradaSaidaCliente {
 
 	public void realizar(String linhaComando, OutputStream paraServidor, InputStream doServidor) throws IOException {
 		LeitorEscritor.escreverLinha(paraServidor, linhaComando);
-		LeitorEscritor.escreverLinha(escritorRespostaServidor, "Servidor disse: " + LeitorEscritor.lerLinha(doServidor));
+		String respostaServidor = LeitorEscritor.lerLinha(doServidor);
+		LeitorEscritor.escreverLinha(escritorRespostaServidor, "Servidor disse: " + respostaServidor);
 	}
 
 }
