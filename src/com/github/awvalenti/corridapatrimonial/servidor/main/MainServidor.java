@@ -1,14 +1,13 @@
 package com.github.awvalenti.corridapatrimonial.servidor.main;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 
 import com.github.awvalenti.corridapatrimonial.servidor.ThreadServidor;
 import com.github.awvalenti.corridapatrimonial.servidor.config.ConfigServidor;
 import com.github.awvalenti.corridapatrimonial.servidor.entradasaida.criptografia.AlgoritmoCriptografico;
 import com.github.awvalenti.corridapatrimonial.servidor.fabricasconcretas.FabricaJogoModel;
 import com.github.awvalenti.corridapatrimonial.servidor.logicajogo.interfaces.InterfaceEntradaJogo;
+import com.github.awvalenti.corridapatrimonial.util.LeitorEscritor;
 
 public class MainServidor {
 
@@ -23,7 +22,7 @@ public class MainServidor {
 
 		System.out.println("Servidor iniciado. Aguardando jogadores. Pressione ENTER para iniciar o jogo.");
 
-		new BufferedReader(new InputStreamReader(System.in)).readLine();
+		LeitorEscritor.lerLinhaConsole();
 
 		entradaJogo.iniciarJogo();
 	}
