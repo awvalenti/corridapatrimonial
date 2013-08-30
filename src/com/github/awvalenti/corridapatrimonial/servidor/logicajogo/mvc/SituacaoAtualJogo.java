@@ -18,11 +18,9 @@ public class SituacaoAtualJogo {
 
 		sb.append("=============================================================\n");
 		for (Jogador jogador : jogadores) {
-			sb.append(jogador.getId()).append("\t").append(jogador.getDinheiroFormatado()).append('\n');
-			sb.append("------------------------\n");
-			sb.append(jogador.getPatrimonio()).append('\n');
+			sb.append(jogador.getId()).append("   ").append(jogador.getDinheiroFormatado()).append('\n');
+			sb.append(jogador.getPatrimonio()).append("\n");
 		}
-
 		sb.append("=============================================================\n");
 
 		return sb.toString();

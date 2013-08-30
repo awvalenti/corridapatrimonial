@@ -29,7 +29,7 @@ public class Patrimonio {
 		StringBuilder sb = new StringBuilder();
 
 		for (Entry<Produto, Integer> entry : itens.entrySet()) {
-			sb.append(entry.getValue()).append(" x ").append(entry.getKey()).append('\n');
+			sb.append(entry.getValue()).append(" ").append(entry.getKey()).append("   ");
 		}
 
 		return sb.toString();
